@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Sora, Inter } from "next/font/google";
+import { Sora, Inter, JetBrains_Mono } from "next/font/google";
 import { LangProvider } from "@/components/lang-context";
 import "./globals.css";
 
@@ -14,6 +14,13 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -32,7 +39,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${sora.variable} ${inter.variable}`}>
+    <html lang="pt-BR" className={`${sora.variable} ${inter.variable} ${mono.variable}`}>
       <body>
         <LangProvider>{children}</LangProvider>
       </body>

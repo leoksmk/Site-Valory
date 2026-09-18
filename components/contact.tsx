@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLang } from "./lang-context";
+import { Reveal } from "./reveal";
 
 type Status = "idle" | "sending" | "ok" | "error";
 
@@ -28,8 +29,8 @@ export default function Contact() {
   }
 
   return (
-    <section className="section section--alt" id="contato">
-      <div className="contact reveal">
+    <section className="section section--tint" id="contato">
+      <Reveal className="contact">
         <div className="contact__copy">
           <span className="eyebrow">{t("ct_eyebrow")}</span>
           <h2>{t("ct_title")}</h2>
@@ -80,7 +81,7 @@ export default function Contact() {
           {status === "ok" && <small className="contact__ok">✓ OK</small>}
           <small className="contact__note">{t("ct_note")}</small>
         </form>
-      </div>
+      </Reveal>
     </section>
   );
 }

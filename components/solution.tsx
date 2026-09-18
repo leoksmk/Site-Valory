@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "./lang-context";
+import { Reveal } from "./reveal";
 
 export default function Solution() {
   const { t } = useLang();
@@ -12,20 +13,22 @@ export default function Solution() {
 
   return (
     <section className="section" id="solucao">
-      <div className="section__head reveal">
+      <Reveal className="section__head">
         <span className="eyebrow">{t("sol_eyebrow")}</span>
         <h2>{t("sol_title")}</h2>
         <p className="section__lead">{t("sol_lead")}</p>
-      </div>
+      </Reveal>
 
       <div className="cards cards--3">
-        {cards.map((c) => (
-          <article className="card spot reveal" key={c.step}>
-            <span className="card__step">{c.step}</span>
-            <div className="card__ico">{c.ico}</div>
-            <h3>{t(c.tt)}</h3>
-            <p>{t(c.dd)}</p>
-          </article>
+        {cards.map((c, i) => (
+          <Reveal key={c.step} delay={i * 0.1}>
+            <article className="card spot">
+              <span className="card__step">{c.step}</span>
+              <div className="card__ico">{c.ico}</div>
+              <h3>{t(c.tt)}</h3>
+              <p>{t(c.dd)}</p>
+            </article>
+          </Reveal>
         ))}
       </div>
     </section>

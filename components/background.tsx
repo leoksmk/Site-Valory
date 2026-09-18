@@ -1,12 +1,10 @@
 export default function Background() {
   return (
     <>
-      <div className="aurora" aria-hidden="true">
-        <span />
-        <span />
-        <span />
+      <div className="ambient" aria-hidden="true">
+        <span className="w1" />
+        <span className="w2" />
       </div>
-      <div className="grain" aria-hidden="true" />
       <div className="scrollbar" id="scrollbar" aria-hidden="true" />
     </>
   );

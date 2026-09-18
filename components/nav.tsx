@@ -28,7 +28,7 @@ export default function Nav() {
   return (
     <header className={`nav${scrolled ? " is-scrolled" : ""}`}>
       <a href="#hero" className="nav__brand" onClick={() => setOpen(false)}>
-        <Image src="/logo.webp" alt="Valory" width={38} height={38} className="nav__logo" priority />
+        <Image src="/logo-mark.png" alt="Valory" width={36} height={38} className="nav__logo" priority />
         <span className="nav__name">VALORY</span>
       </a>
 

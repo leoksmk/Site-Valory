@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useLang } from "./lang-context";
+import { Reveal } from "./reveal";
 
 type State = "idle" | "run" | "ok" | "bad";
 
@@ -80,14 +81,14 @@ export default function TripleCheck() {
   const names = ["tc_1_t", "tc_2_t", "tc_3_t"] as const;
 
   return (
-    <section className="section" id="triplecheck">
-      <div className="section__head reveal">
+    <section className="section sec-dark" id="triplecheck">
+      <Reveal className="section__head">
         <span className="eyebrow">{t("tc_eyebrow")}</span>
         <h2>{t("tc_title")}</h2>
         <p className="section__lead">{t("tc_lead")}</p>
-      </div>
+      </Reveal>
 
-      <div className="tcx reveal">
+      <Reveal className="tcx">
         <div className="tcx__counters">
           {[0, 1, 2].map((i) => (
             <article className={cardClass(i)} key={i}>
@@ -125,7 +126,7 @@ export default function TripleCheck() {
             </label>
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

@@ -8,8 +8,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer__brand">
-        <Image src="/logo.webp" alt="Valory" width={30} height={30} />
-        <span>VALORY</span>
+        <Image src="/logo-full-t.png" alt="Valory" width={107} height={48} priority={false} />
       </div>
       <p className="footer__tag">{t("footer_tag")}</p>
       <p className="footer__copy">
