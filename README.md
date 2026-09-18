@@ -2,7 +2,7 @@
 
 Landing page estática da **Valory**, apresentando o **RAC** — célula automatizada de cartonização inteligente para alocação de medicamentos em embalagens (Triple Check, visão computacional, zero divergência, NR-12).
 
-Site estático (HTML + CSS + JS puro), **bilíngue PT/EN**, sem build. Roda direto no GitHub Pages.
+Site estático (HTML + CSS + JS puro), **bilíngue PT/EN**, sem build. Roda direto na Vercel ou no GitHub Pages.
 
 ## Estrutura
 
@@ -22,12 +22,26 @@ python3 -m http.server 8080
 # http://localhost:8080
 ```
 
-## Publicar no GitHub Pages
+## Publicar na Vercel (recomendado)
 
-1. Faça push para o repositório.
-2. **Settings → Pages → Build and deployment**.
-3. **Source: Deploy from a branch** → escolha a branch (ex.: `main`) e a pasta `/ (root)`.
-4. Salve. Em ~1 min o site fica no ar em `https://<usuário>.github.io/<repo>/`.
+Site estático, **sem build**. A Vercel serve a pasta direto.
+
+1. Acesse [vercel.com](https://vercel.com) → **Add New… → Project** → importe `leoksmk/Site-Valory`.
+2. **Framework Preset:** `Other` · **Build Command:** vazio · **Output Directory:** `.` (raiz).
+   (O `vercel.json` já deixa isso pronto — pode só clicar em **Deploy**.)
+3. A branch de **produção** (padrão: `main`) vira a URL principal.
+4. **Toda outra branch e cada PR ganham um _Preview URL_ automático** — é assim que você vê esta branch
+   (`claude/loving-mccarthy-ea04tw`) no ar sem mexer na produção.
+
+> Importante: se o deploy "não muda", quase sempre é porque as alterações estão numa branch
+> diferente da de produção. Faça merge na `main` para atualizar a URL principal, ou use o Preview URL da branch.
+
+## Publicar no GitHub Pages (alternativa)
+
+1. **Settings → Pages → Build and deployment**.
+2. **Source: Deploy from a branch** → escolha a branch e a pasta `/ (root)`.
+3. Em ~1 min o site fica em `https://<usuário>.github.io/<repo>/`.
+   (Pages publica **uma** branch só — por isso mudanças em outra branch não aparecem.)
 
 ## O que ainda falta trocar (placeholders)
 
