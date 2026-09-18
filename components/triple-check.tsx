@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useLang } from "./lang-context";
 import { Reveal } from "./reveal";
+import { SITE } from "@/lib/site-data";
 
 type State = "idle" | "run" | "ok" | "bad";
 
@@ -54,7 +55,8 @@ export default function TripleCheck() {
     running.current = true;
     clearRaf();
     setState("run");
-    const total = 8 + Math.floor(Math.random() * 8); // 8..15
+    const { minItems, maxItems } = SITE.tripleCheck;
+    const total = minItems + Math.floor(Math.random() * (maxItems - minItems + 1));
     const finals: [number, number, number] = [total, total, force ? total - 1 : total];
     let done = 0;
     finals.forEach((to, i) => {

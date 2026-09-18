@@ -93,6 +93,7 @@ section{position:relative}
 .stage__float{position:absolute;top:44px;left:-18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:11px 15px;box-shadow:var(--shadow-sm);z-index:3}
 .stage__float .t{font-size:.7rem;color:var(--muted)}
 .stage__float .v{font-family:var(--font-sora);font-weight:700;color:var(--green)}
+.stage__note{margin-top:12px;text-align:right;font-family:var(--font-mono),ui-monospace,monospace;font-size:.6rem;letter-spacing:.06em;color:#6b6b73}
 .hero__scroll{position:absolute;bottom:22px;left:50%;translate:-50% 0;width:26px;height:42px;border:2px solid var(--line);border-radius:16px;display:grid;justify-items:center;padding-top:7px}
 .hero__scroll span{width:4px;height:8px;border-radius:2px;background:var(--gold);animation:scrolldot 1.6s infinite}
 @keyframes scrolldot{0%{opacity:0;translate:0 -4px}40%{opacity:1}80%{opacity:0;translate:0 10px}}

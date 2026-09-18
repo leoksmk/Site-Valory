@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import type { Variants } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useLang } from "./lang-context";
+import { SITE } from "@/lib/site-data";
 
 const EASE = [0.22, 0.7, 0.2, 1] as const;
 
@@ -19,17 +20,18 @@ const item: Variants = {
 
 export default function Hero() {
   const { t } = useLang();
-  const [peso, setPeso] = useState(128.4);
-  const [corr, setCorr] = useState(1.7);
+  const { peso, corrente, tripleCheck, intervalMs } = SITE.telemetry;
+  const [pesoV, setPesoV] = useState(peso.base + peso.var * 0.4);
+  const [corrV, setCorrV] = useState(corrente.base + corrente.var * 0.4);
 
-  // telemetria "viva" — pequenas flutuações
+  // telemetria simulada — pequenas flutuações (valores ilustrativos)
   useEffect(() => {
     const id = setInterval(() => {
-      setPeso(128 + Math.random() * 1.2);
-      setCorr(1.5 + Math.random() * 0.5);
-    }, 1400);
+      setPesoV(peso.base + Math.random() * peso.var);
+      setCorrV(corrente.base + Math.random() * corrente.var);
+    }, intervalMs);
     return () => clearInterval(id);
-  }, []);
+  }, [peso.base, peso.var, corrente.base, corrente.var, intervalMs]);
 
   return (
     <section className="hero" id="hero">
@@ -47,10 +49,10 @@ export default function Hero() {
             {t("hero_sub")}
           </motion.p>
           <motion.div className="hero__cta" variants={item}>
-            <a href="#demo" className="btn btn--dark">
+            <a href="#demo" className="btn btn--gold">
               {t("hero_cta1")}
             </a>
-            <a href="#contato" className="btn btn--ghost">
+            <a href="#triplecheck" className="btn btn--ghost">
               {t("hero_cta2")}
             </a>
           </motion.div>
@@ -78,10 +80,10 @@ export default function Hero() {
         >
           <div className="stage" id="stage">
             <div className="stage__top">
-              <span className="t">RAC · TELEMETRIA EM TEMPO REAL</span>
+              <span className="t">RAC · TELEMETRIA</span>
               <span className="stage__live">
                 <b />
-                LIVE
+                {t("hero_demo_tag")}
               </span>
             </div>
             {/* TROCAR: /render-placeholder.png pelo render 3D final (ou modelo STL 3D) */}
@@ -90,27 +92,25 @@ export default function Hero() {
             </div>
             <div className="stage__chips">
               <div className="chip">
-                <div className="k">PESO LÍQUIDO</div>
-                <div className="v">{peso.toFixed(1)}g</div>
+                <div className="k">{peso.label}</div>
+                <div className="v">
+                  {pesoV.toFixed(1)}
+                  {peso.unit}
+                </div>
               </div>
               <div className="chip">
-                <div className="k">CORRENTE</div>
-                <div className="v">{corr.toFixed(1)}A</div>
+                <div className="k">{corrente.label}</div>
+                <div className="v">
+                  {corrV.toFixed(1)}
+                  {corrente.unit}
+                </div>
               </div>
               <div className="chip ok">
                 <div className="k">TRIPLE CHECK</div>
-                <div className="v">9=9=9</div>
+                <div className="v">{tripleCheck}</div>
               </div>
             </div>
-            <motion.div
-              className="stage__float"
-              initial={{ opacity: 0, x: -12 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1, duration: 0.5 }}
-            >
-              <div className="t">Status</div>
-              <div className="v">✓ {t("tc_status_ok").split("·")[1]?.trim() || "Zero divergência"}</div>
-            </motion.div>
+            <div className="stage__note">{t("hero_demo_note")}</div>
           </div>
         </motion.div>
       </div>
