@@ -13,6 +13,11 @@
 </head>
 <body>
 
+<!-- background -->
+<div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
+
 <!-- ============ NAV ============ -->
 <header class="nav" id="nav">
   <a href="#hero" class="nav__brand">
@@ -41,49 +46,64 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="hero">
-  <div class="hero__glow"></div>
   <div class="hero__grid">
     <div class="hero__copy reveal">
-      <span class="badge" data-i18n="hero_badge">Fase 2 → Fase 3 · Em integração</span>
+      <span class="badge"><i class="dot"></i><span data-i18n="hero_badge">Fase 2 → Fase 3 · Em integração</span></span>
       <h1 class="hero__title">
         <span data-i18n="hero_title_1">Alocação de medicamentos</span>
-        <span class="grad" data-i18n="hero_title_2">100% automatizada.</span>
+        <span class="grad shimmer" data-i18n="hero_title_2">100% automatizada.</span>
       </h1>
       <p class="hero__sub" data-i18n="hero_sub">
         Uma célula robótica que separa, conta e embala medicamentos em caixas — com verificação tripla e zero divergência, sem depender de operação humana intensiva.
       </p>
       <div class="hero__cta">
         <a href="#demo" class="btn btn--gold" data-i18n="hero_cta1">Ver demonstração</a>
-        <a href="#solucao" class="btn btn--ghost" data-i18n="hero_cta2">Entenda o projeto</a>
+        <a href="#triplecheck" class="btn btn--ghost" data-i18n="hero_cta2">Como garantimos zero erro</a>
       </div>
     </div>
 
-    <div class="hero__visual reveal">
+    <div class="hero__visual reveal" id="tilt">
       <!-- TROCAR: substitua render-placeholder.png pelo render 3D final -->
-      <div class="hero__frame">
+      <div class="hero__frame" id="tiltInner">
+        <div class="hero__frameGlow"></div>
         <img src="assets/img/render-placeholder.png" alt="Valory RAC" class="hero__img" />
         <span class="hero__tag">RAC · NEXT 2K26</span>
+        <span class="hero__chip hero__chip--1">◎ Visão</span>
+        <span class="hero__chip hero__chip--2">⚖ Peso</span>
       </div>
     </div>
   </div>
+  <a href="#solucao" class="hero__scroll" aria-label="Rolar"><span></span></a>
 </section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>Triple Check</span><i>◆</i><span>Zero Divergência</span><i>◆</i><span>Visão Computacional</span><i>◆</i>
+    <span>Digital Twin</span><i>◆</i><span>Rastreabilidade Total</span><i>◆</i><span>Segurança NR-12</span><i>◆</i>
+    <span>IHM Web</span><i>◆</i>
+    <span>Triple Check</span><i>◆</i><span>Zero Divergência</span><i>◆</i><span>Visão Computacional</span><i>◆</i>
+    <span>Digital Twin</span><i>◆</i><span>Rastreabilidade Total</span><i>◆</i><span>Segurança NR-12</span><i>◆</i>
+    <span>IHM Web</span><i>◆</i>
+  </div>
+</div>
 
 <!-- ============ STATS ============ -->
 <section class="stats">
-  <div class="stat reveal">
-    <div class="stat__num">3<span>×</span></div>
+  <div class="stat spot reveal">
+    <div class="stat__num"><span class="count" data-count="3">0</span><span class="stat__suf">×</span></div>
     <div class="stat__lbl" data-i18n="stat_1">Contagens independentes (Triple Check)</div>
   </div>
-  <div class="stat reveal">
-    <div class="stat__num">0<span>%</span></div>
+  <div class="stat spot reveal">
+    <div class="stat__num"><span class="count" data-count="0">0</span><span class="stat__suf">%</span></div>
     <div class="stat__lbl" data-i18n="stat_2">Divergência tolerada na validação</div>
   </div>
-  <div class="stat reveal">
-    <div class="stat__num">NR-12</div>
+  <div class="stat spot reveal">
+    <div class="stat__num stat__num--txt">NR-12</div>
     <div class="stat__lbl" data-i18n="stat_3">Arquitetura de segurança industrial</div>
   </div>
-  <div class="stat reveal">
-    <div class="stat__num">24/7</div>
+  <div class="stat spot reveal">
+    <div class="stat__num stat__num--txt">24/7</div>
     <div class="stat__lbl" data-i18n="stat_4">Operação contínua e rastreável</div>
   </div>
 </section>
@@ -99,17 +119,17 @@
   </div>
 
   <div class="cards cards--3">
-    <article class="card reveal">
+    <article class="card spot reveal"><span class="card__step">01</span>
       <div class="card__ico">◧</div>
       <h3 data-i18n="sol_c1_t">Separa</h3>
       <p data-i18n="sol_c1_d">Dispensers organizados por SKU liberam cada produto de forma controlada, conduzidos por funis ao ponto central.</p>
     </article>
-    <article class="card reveal">
+    <article class="card spot reveal"><span class="card__step">02</span>
       <div class="card__ico">⊞</div>
       <h3 data-i18n="sol_c2_t">Embala</h3>
       <p data-i18n="sol_c2_d">Uma mesa cartesiana X/Y posiciona a caixa durante o enchimento, distribuindo o conteúdo com precisão.</p>
     </article>
-    <article class="card reveal">
+    <article class="card spot reveal"><span class="card__step">03</span>
       <div class="card__ico">✓</div>
       <h3 data-i18n="sol_c3_t">Valida</h3>
       <p data-i18n="sol_c3_d">Cada ordem é conferida por três contagens independentes. Qualquer divergência bloqueia o processo automaticamente.</p>
@@ -128,21 +148,21 @@
   </div>
 
   <div class="levels">
-    <div class="level reveal">
+    <div class="level spot reveal">
       <span class="level__n">01</span>
       <div>
         <h3 data-i18n="how_l1_t">Nível Superior · Dispensação</h3>
         <p data-i18n="how_l1_d">4 dispensers, sistema de funis e distribuidor central que direcionam o fluxo de produtos até a embalagem.</p>
       </div>
     </div>
-    <div class="level reveal">
+    <div class="level spot reveal">
       <span class="level__n">02</span>
       <div>
         <h3 data-i18n="how_l2_t">Nível Intermediário · Cartonização</h3>
         <p data-i18n="how_l2_d">Mesa cartesiana X/Y com célula de carga integrada para posicionamento e pesagem contínua da caixa.</p>
       </div>
     </div>
-    <div class="level reveal">
+    <div class="level spot reveal">
       <span class="level__n">03</span>
       <div>
         <h3 data-i18n="how_l3_t">Nível Inferior · Infra de TI</h3>
@@ -152,39 +172,53 @@
   </div>
 </section>
 
-<!-- ============ TRIPLE CHECK ============ -->
+<!-- ============ TRIPLE CHECK (INTERATIVO) ============ -->
 <section class="section" id="triplecheck">
   <div class="section__head reveal">
     <span class="eyebrow" data-i18n="tc_eyebrow">O diferencial</span>
     <h2 data-i18n="tc_title">Triple Check · Zero Divergência</h2>
     <p class="section__lead" data-i18n="tc_lead">
-      A decisão de liberar uma embalagem cruza três contagens independentes. Basta uma delas divergir acima da tolerância para o processo bloquear — com rastreabilidade completa.
+      A decisão de liberar uma embalagem cruza três contagens independentes. Basta uma delas divergir acima da tolerância para o processo bloquear. Rode a simulação:
     </p>
   </div>
 
-  <div class="tc">
-    <article class="tc__col reveal">
-      <span class="tc__n">#1</span>
-      <h3 data-i18n="tc_1_t">Contagem CNC</h3>
-      <p data-i18n="tc_1_d">Incrementada a cada ciclo de coleta e depósito concluído com sucesso pelo controle de movimento.</p>
-    </article>
-    <div class="tc__op">=</div>
-    <article class="tc__col reveal">
-      <span class="tc__n">#2</span>
-      <h3 data-i18n="tc_2_t">Contagem por Peso</h3>
-      <p data-i18n="tc_2_d">Célula de carga de alta precisão calcula a quantidade pelo peso líquido em tempo real.</p>
-    </article>
-    <div class="tc__op">=</div>
-    <article class="tc__col reveal">
-      <span class="tc__n">#3</span>
-      <h3 data-i18n="tc_3_t">Contagem Visual</h3>
-      <p data-i18n="tc_3_d">Visão computacional confere o conteúdo da embalagem de forma independente das outras duas.</p>
-    </article>
-  </div>
+  <div class="tcx reveal" id="tcx">
+    <div class="tcx__counters">
+      <article class="tcx__card" data-ch="1">
+        <span class="tcx__id">#1</span>
+        <span class="tcx__name" data-i18n="tc_1_t">Contagem CNC</span>
+        <span class="tcx__num" data-num>0</span>
+        <span class="tcx__unit" data-i18n="tc_unit">itens</span>
+      </article>
+      <article class="tcx__card" data-ch="2">
+        <span class="tcx__id">#2</span>
+        <span class="tcx__name" data-i18n="tc_2_t">Contagem por Peso</span>
+        <span class="tcx__num" data-num>0</span>
+        <span class="tcx__unit" data-i18n="tc_unit">itens</span>
+      </article>
+      <article class="tcx__card" data-ch="3">
+        <span class="tcx__id">#3</span>
+        <span class="tcx__name" data-i18n="tc_3_t">Contagem Visual</span>
+        <span class="tcx__num" data-num>0</span>
+        <span class="tcx__unit" data-i18n="tc_unit">itens</span>
+      </article>
+    </div>
 
-  <div class="tc__result reveal">
-    <strong data-i18n="tc_res_t">Resultado:</strong>
-    <span data-i18n="tc_res_d">validação automática do enchimento, bloqueio imediato em caso de divergência e rastreabilidade completa de cada operação.</span>
+    <div class="tcx__panel">
+      <div class="tcx__status" id="tcStatus" data-state="idle">
+        <i class="tcx__led"></i>
+        <span id="tcStatusTxt" data-i18n="tc_status_idle">Aguardando ciclo</span>
+      </div>
+      <div class="tcx__controls">
+        <button class="btn btn--gold" id="tcRun" data-i18n="tc_sim_btn">Simular ciclo</button>
+        <button class="btn btn--ghost" id="tcReset" data-i18n="tc_sim_reset">Reiniciar</button>
+        <label class="tcx__toggle">
+          <input type="checkbox" id="tcForce" />
+          <span class="tcx__switch"></span>
+          <span data-i18n="tc_toggle">Forçar divergência</span>
+        </label>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -199,32 +233,32 @@
   </div>
 
   <div class="cards cards--3">
-    <article class="card card--tech reveal">
+    <article class="card card--tech spot reveal">
       <div class="card__ico">◎</div>
       <h3 data-i18n="tech_c1_t">Visão Computacional</h3>
       <p data-i18n="tech_c1_d">Serviço de visão que valida o conteúdo da embalagem — a terceira prova do Triple Check.</p>
     </article>
-    <article class="card card--tech reveal">
+    <article class="card card--tech spot reveal">
       <div class="card__ico">⚖</div>
       <h3 data-i18n="tech_c2_t">Zero Divergência</h3>
       <p data-i18n="tech_c2_d">Cruzamento de contagens com tolerância configurável e bloqueio automático fora do limite.</p>
     </article>
-    <article class="card card--tech reveal">
+    <article class="card card--tech spot reveal">
       <div class="card__ico">◫</div>
       <h3 data-i18n="tech_c3_t">Rastreabilidade Total</h3>
       <p data-i18n="tech_c3_d">Cada ciclo, evento e ordem é persistido com carimbo de tempo para auditoria completa.</p>
     </article>
-    <article class="card card--tech reveal">
+    <article class="card card--tech spot reveal">
       <div class="card__ico">⟳</div>
       <h3 data-i18n="tech_c4_t">Telemetria & Digital Twin</h3>
       <p data-i18n="tech_c4_d">Posição, peso, corrente e inclinação medidos em tempo real, refletidos num gêmeo digital.</p>
     </article>
-    <article class="card card--tech reveal">
+    <article class="card card--tech spot reveal">
       <div class="card__ico">⛨</div>
       <h3 data-i18n="tech_c5_t">Segurança NR-12</h3>
       <p data-i18n="tech_c5_d">Portas de operação e abastecimento, parada de emergência e intertravamento previsto.</p>
     </article>
-    <article class="card card--tech reveal">
+    <article class="card card--tech spot reveal">
       <div class="card__ico">▦</div>
       <h3 data-i18n="tech_c6_t">IHM Web</h3>
       <p data-i18n="tech_c6_d">Painel central em tempo real: contadores, telemetria, ordens e console de operação.</p>
@@ -243,7 +277,7 @@
   </div>
 
   <!-- TROCAR: coloque aqui o vídeo/GIF da IHM. Basta substituir o bloco .demo__ph -->
-  <div class="demo__media reveal">
+  <div class="demo__media reveal spot">
     <div class="demo__ph">
       <div class="demo__play">▶</div>
       <p data-i18n="demo_ph">Espaço reservado para o vídeo da IHM<br><small>(substituir por vídeo/GIF)</small></p>
@@ -272,7 +306,7 @@
       </ul>
     </div>
 
-    <form class="contact__form" onsubmit="return false;">
+    <form class="contact__form spot" onsubmit="return false;">
       <label><span data-i18n="ct_f_name">Nome</span><input type="text" name="name" placeholder="..." /></label>
       <label><span data-i18n="ct_f_email">E-mail</span><input type="email" name="email" placeholder="..." /></label>
       <label><span data-i18n="ct_f_msg">Mensagem</span><textarea name="msg" rows="4" placeholder="..."></textarea></label>

@@ -8,7 +8,7 @@ const I18N = {
     hero_title_1:"Alocação de medicamentos",
     hero_title_2:"100% automatizada.",
     hero_sub:"Uma célula robótica que separa, conta e embala medicamentos em caixas — com verificação tripla e zero divergência, sem depender de operação humana intensiva.",
-    hero_cta1:"Ver demonstração", hero_cta2:"Entenda o projeto",
+    hero_cta1:"Ver demonstração", hero_cta2:"Como garantimos zero erro",
 
     stat_1:"Contagens independentes (Triple Check)",
     stat_2:"Divergência tolerada na validação",
@@ -28,11 +28,12 @@ const I18N = {
     how_l3_t:"Nível Inferior · Infra de TI", how_l3_d:"Raspberry Pi, drivers, fontes e cabeamento — o cérebro que orquestra a célula e expõe tudo na IHM web.",
 
     tc_eyebrow:"O diferencial", tc_title:"Triple Check · Zero Divergência",
-    tc_lead:"A decisão de liberar uma embalagem cruza três contagens independentes. Basta uma delas divergir acima da tolerância para o processo bloquear — com rastreabilidade completa.",
-    tc_1_t:"Contagem CNC", tc_1_d:"Incrementada a cada ciclo de coleta e depósito concluído com sucesso pelo controle de movimento.",
-    tc_2_t:"Contagem por Peso", tc_2_d:"Célula de carga de alta precisão calcula a quantidade pelo peso líquido em tempo real.",
-    tc_3_t:"Contagem Visual", tc_3_d:"Visão computacional confere o conteúdo da embalagem de forma independente das outras duas.",
-    tc_res_t:"Resultado:", tc_res_d:"validação automática do enchimento, bloqueio imediato em caso de divergência e rastreabilidade completa de cada operação.",
+    tc_lead:"A decisão de liberar uma embalagem cruza três contagens independentes. Basta uma delas divergir acima da tolerância para o processo bloquear. Rode a simulação:",
+    tc_1_t:"Contagem CNC", tc_2_t:"Contagem por Peso", tc_3_t:"Contagem Visual",
+    tc_unit:"itens",
+    tc_sim_btn:"Simular ciclo", tc_sim_reset:"Reiniciar", tc_toggle:"Forçar divergência",
+    tc_status_idle:"Aguardando ciclo", tc_status_run:"Executando ciclo…",
+    tc_status_ok:"Sincronizado · Zero divergência", tc_status_bad:"Divergência detectada · Processo bloqueado",
 
     tech_eyebrow:"Tecnologia", tech_title:"O que há por dentro",
     tech_lead:"Engenharia industrial e software se encontram numa arquitetura distribuída, medindo e registrando cada ciclo.",
@@ -65,7 +66,7 @@ const I18N = {
     hero_title_1:"Medication allocation,",
     hero_title_2:"100% automated.",
     hero_sub:"A robotic cell that sorts, counts and packs medication into boxes — with triple verification and zero divergence, without relying on intensive human labor.",
-    hero_cta1:"Watch the demo", hero_cta2:"Explore the project",
+    hero_cta1:"Watch the demo", hero_cta2:"How we guarantee zero error",
 
     stat_1:"Independent counts (Triple Check)",
     stat_2:"Divergence tolerated at validation",
@@ -85,11 +86,12 @@ const I18N = {
     how_l3_t:"Bottom Level · IT Infra", how_l3_d:"Raspberry Pi, drivers, power supplies and wiring — the brain that orchestrates the cell and exposes it all on the web HMI.",
 
     tc_eyebrow:"The differentiator", tc_title:"Triple Check · Zero Divergence",
-    tc_lead:"Releasing a package cross-checks three independent counts. A single one drifting beyond tolerance blocks the process — with full traceability.",
-    tc_1_t:"CNC Count", tc_1_d:"Incremented on every pick-and-place cycle successfully completed by the motion controller.",
-    tc_2_t:"Weight Count", tc_2_d:"A high-precision load cell derives the quantity from net weight in real time.",
-    tc_3_t:"Visual Count", tc_3_d:"Computer vision checks the package contents independently from the other two.",
-    tc_res_t:"Result:", tc_res_d:"automatic fill validation, immediate blocking on divergence and full traceability of every operation.",
+    tc_lead:"Releasing a package cross-checks three independent counts. A single one drifting beyond tolerance blocks the process. Run the simulation:",
+    tc_1_t:"CNC Count", tc_2_t:"Weight Count", tc_3_t:"Visual Count",
+    tc_unit:"items",
+    tc_sim_btn:"Simulate cycle", tc_sim_reset:"Reset", tc_toggle:"Force divergence",
+    tc_status_idle:"Waiting for cycle", tc_status_run:"Running cycle…",
+    tc_status_ok:"Synced · Zero divergence", tc_status_bad:"Divergence detected · Process blocked",
 
     tech_eyebrow:"Technology", tech_title:"What's inside",
     tech_lead:"Industrial engineering meets software in a distributed architecture, measuring and logging every cycle.",
@@ -116,17 +118,110 @@ const I18N = {
   }
 };
 
-/* ============ apply language ============ */
+let LANG = "pt";
+function t(k){ return (I18N[LANG] && I18N[LANG][k]) || (I18N.pt[k] || ""); }
+
 function setLang(lang){
-  const dict = I18N[lang] || I18N.pt;
+  LANG = (lang === "en") ? "en" : "pt";
+  const dict = I18N[LANG];
   document.querySelectorAll("[data-i18n]").forEach(el=>{
     const k = el.getAttribute("data-i18n");
     if(dict[k] != null) el.textContent = dict[k];
   });
-  document.documentElement.lang = lang === "en" ? "en" : "pt-BR";
-  document.querySelector(".lang__pt").classList.toggle("is-active", lang==="pt");
-  document.querySelector(".lang__en").classList.toggle("is-active", lang==="en");
-  try{ localStorage.setItem("valory_lang", lang); }catch(e){}
+  document.documentElement.lang = LANG === "en" ? "en" : "pt-BR";
+  document.querySelector(".lang__pt").classList.toggle("is-active", LANG==="pt");
+  document.querySelector(".lang__en").classList.toggle("is-active", LANG==="en");
+  // keep the TC status text in sync with current state
+  if(window.__tcRender) window.__tcRender();
+  try{ localStorage.setItem("valory_lang", LANG); }catch(e){}
+}
+
+/* ============ count-up ============ */
+function countUp(el){
+  const target = parseInt(el.getAttribute("data-count"),10) || 0;
+  const dur = 1100; const start = performance.now();
+  function step(now){
+    const p = Math.min((now-start)/dur,1);
+    const eased = 1 - Math.pow(1-p,3);
+    el.textContent = Math.round(eased*target);
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ============ Triple Check simulator ============ */
+function initTripleCheck(){
+  const root = document.getElementById("tcx");
+  if(!root) return;
+  const cards = [...root.querySelectorAll(".tcx__card")];
+  const nums  = cards.map(c=>c.querySelector("[data-num]"));
+  const statusEl = document.getElementById("tcStatus");
+  const statusTxt = document.getElementById("tcStatusTxt");
+  const runBtn = document.getElementById("tcRun");
+  const resetBtn = document.getElementById("tcReset");
+  const forceEl = document.getElementById("tcForce");
+  let state = "idle", running = false;
+  const finals = [0,0,0];
+
+  window.__tcRender = ()=>{
+    const map = {idle:"tc_status_idle",run:"tc_status_run",ok:"tc_status_ok",bad:"tc_status_bad"};
+    statusEl.setAttribute("data-state", state);
+    statusTxt.textContent = t(map[state]);
+  };
+
+  function reset(){
+    running=false; state="idle";
+    nums.forEach(n=>n.textContent="0");
+    cards.forEach(c=>c.classList.remove("is-run","is-ok","is-bad"));
+    runBtn.disabled=false;
+    window.__tcRender();
+  }
+
+  function animateCount(el, to, dur, cb){
+    const start=performance.now(); const from=0;
+    (function step(now){
+      const p=Math.min((now-start)/dur,1);
+      const eased=1-Math.pow(1-p,3);
+      el.textContent=Math.round(from+(to-from)*eased);
+      if(p<1) requestAnimationFrame(step); else if(cb) cb();
+    })(performance.now());
+  }
+
+  function run(){
+    if(running) return;
+    running=true; runBtn.disabled=true; state="run"; window.__tcRender();
+    cards.forEach(c=>c.classList.remove("is-ok","is-bad"));
+    const total = 8 + Math.floor(Math.random()*8); // 8..15
+    const force = forceEl.checked;
+    finals[0]=total; finals[1]=total; finals[2]= force ? total-1 : total; // vision diverges
+    let done=0;
+    cards.forEach((c,i)=>{
+      setTimeout(()=>{
+        c.classList.add("is-run");
+        animateCount(nums[i], finals[i], 900, ()=>{
+          done++;
+          if(done===3) finish(force);
+        });
+      }, i*380);
+    });
+  }
+
+  function finish(force){
+    running=false; runBtn.disabled=false;
+    if(force){
+      state="bad";
+      cards.forEach(c=>{c.classList.remove("is-run");c.classList.add("is-bad");});
+    }else{
+      state="ok";
+      cards.forEach(c=>{c.classList.remove("is-run");c.classList.add("is-ok");});
+    }
+    window.__tcRender();
+  }
+
+  runBtn.addEventListener("click", run);
+  resetBtn.addEventListener("click", reset);
+  forceEl.addEventListener("change", ()=>{ if(state!=="run") reset(); });
+  reset();
 }
 
 /* ============ init ============ */
@@ -136,16 +231,21 @@ document.addEventListener("DOMContentLoaded", ()=>{
   try{ lang = localStorage.getItem("valory_lang") || "pt"; }catch(e){}
   setLang(lang);
   document.getElementById("langToggle").addEventListener("click", ()=>{
-    lang = (document.documentElement.lang === "en") ? "pt" : "en";
-    setLang(lang);
+    setLang(document.documentElement.lang === "en" ? "pt" : "en");
   });
 
   // year
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // nav scroll state
+  // nav scroll + progress bar
   const nav = document.getElementById("nav");
-  const onScroll = ()=> nav.classList.toggle("is-scrolled", window.scrollY > 20);
+  const bar = document.getElementById("scrollbar");
+  function onScroll(){
+    const y = window.scrollY;
+    nav.classList.toggle("is-scrolled", y>20);
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h>0 ? (y/h)*100 : 0) + "%";
+  }
   onScroll(); window.addEventListener("scroll", onScroll, {passive:true});
 
   // mobile menu
@@ -156,7 +256,45 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
   // reveal on scroll
   const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("is-in"); io.unobserve(e.target); }});
-  }, {threshold:.12});
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add("is-in");
+        e.target.querySelectorAll?.(".count").forEach(countUp);
+        if(e.target.classList.contains("count")) countUp(e.target);
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:.14});
   document.querySelectorAll(".reveal").forEach(el=> io.observe(el));
+
+  // spotlight cursor tracking
+  const fine = window.matchMedia("(pointer:fine)").matches;
+  if(fine){
+    document.querySelectorAll(".spot, .hero__frameGlow").forEach(el=>{
+      const target = el.classList.contains("hero__frameGlow") ? el.parentElement : el;
+      target.addEventListener("mousemove", ev=>{
+        const r = target.getBoundingClientRect();
+        el.style.setProperty("--mx", ((ev.clientX-r.left)/r.width*100)+"%");
+        el.style.setProperty("--my", ((ev.clientY-r.top)/r.height*100)+"%");
+      });
+    });
+
+    // hero 3D tilt
+    const tilt = document.getElementById("tilt");
+    const inner = document.getElementById("tiltInner");
+    if(tilt && inner){
+      tilt.addEventListener("mousemove", ev=>{
+        const r = tilt.getBoundingClientRect();
+        const rx = ((ev.clientY-r.top)/r.height - .5) * -8;
+        const ry = ((ev.clientX-r.left)/r.width - .5) * 10;
+        inner.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+        inner.style.setProperty("--mx", ((ev.clientX-r.left)/r.width*100)+"%");
+        inner.style.setProperty("--my", ((ev.clientY-r.top)/r.height*100)+"%");
+      });
+      tilt.addEventListener("mouseleave", ()=>{ inner.style.transform=""; });
+    }
+  }
+
+  // triple check simulator
+  initTripleCheck();
 });
