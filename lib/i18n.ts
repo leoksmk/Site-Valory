@@ -10,6 +10,7 @@ export const DICT = {
     hero_title_2: "100% automatizada.",
     hero_sub: "Uma célula robótica que separa, conta e embala medicamentos em caixas — com verificação tripla e zero divergência, sem depender de operação humana intensiva.",
     hero_cta1: "Ver demonstração", hero_cta2: "Como garantimos zero erro",
+    hero_demo_tag: "DEMO", hero_demo_note: "Valores ilustrativos de demonstração",
 
     stat_1: "Contagens independentes (Triple Check)",
     stat_2: "Divergência tolerada na validação",
@@ -68,6 +69,7 @@ export const DICT = {
     hero_title_2: "100% automated.",
     hero_sub: "A robotic cell that sorts, counts and packs medication into boxes — with triple verification and zero divergence, without relying on intensive human labor.",
     hero_cta1: "Watch the demo", hero_cta2: "How we guarantee zero error",
+    hero_demo_tag: "DEMO", hero_demo_note: "Illustrative demo values",
 
     stat_1: "Independent counts (Triple Check)",
     stat_2: "Divergence tolerated at validation",

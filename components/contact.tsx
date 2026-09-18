@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLang } from "./lang-context";
 import { Reveal } from "./reveal";
+import { SITE } from "@/lib/site-data";
 
 type Status = "idle" | "sending" | "ok" | "error";
 
@@ -39,11 +40,11 @@ export default function Contact() {
             {/* TROCAR: e-mail e telefone reais */}
             <li>
               <span>{t("ct_email_l")}</span>
-              <a href="mailto:contato@valory.com">contato@valory.com</a>
+              <a href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a>
             </li>
             <li>
               <span>{t("ct_phone_l")}</span>
-              <a href="tel:+550000000000">+55 (00) 0000-0000</a>
+              <a href={`tel:${SITE.contact.phoneHref}`}>{SITE.contact.phoneLabel}</a>
             </li>
           </ul>
         </div>
