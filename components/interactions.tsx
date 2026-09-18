@@ -3,11 +3,10 @@
 import { useEffect } from "react";
 
 /**
- * Efeitos globais de UI, aplicados via DOM após a montagem:
+ * Efeitos de UI aplicados via DOM:
  * - barra de progresso de scroll
- * - reveal-on-scroll (adiciona .is-in)
- * - spotlight seguindo o cursor nos elementos .spot
- * - tilt 3D no bloco #tilt / #tiltInner
+ * - spotlight seguindo o cursor (.spot)
+ * - tilt 3D + luz no palco do produto (#stage)
  */
 export default function Interactions() {
   useEffect(() => {
@@ -20,21 +19,6 @@ export default function Interactions() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    // reveal
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("is-in");
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.14 }
-    );
-    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-
-    // spotlight + tilt (apenas em ponteiro fino)
     const fine = window.matchMedia("(pointer:fine)").matches;
     const cleanups: Array<() => void> = [];
 
@@ -49,32 +33,30 @@ export default function Interactions() {
         cleanups.push(() => el.removeEventListener("mousemove", move));
       });
 
-      const tilt = document.getElementById("tilt");
-      const inner = document.getElementById("tiltInner");
-      if (tilt && inner) {
+      const stage = document.getElementById("stage");
+      if (stage) {
         const move = (ev: MouseEvent) => {
-          const r = tilt.getBoundingClientRect();
-          const rx = ((ev.clientY - r.top) / r.height - 0.5) * -8;
-          const ry = ((ev.clientX - r.left) / r.width - 0.5) * 10;
-          inner.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-          inner.style.setProperty("--mx", ((ev.clientX - r.left) / r.width) * 100 + "%");
-          inner.style.setProperty("--my", ((ev.clientY - r.top) / r.height) * 100 + "%");
+          const r = stage.getBoundingClientRect();
+          const rx = ((ev.clientY - r.top) / r.height - 0.5) * -5;
+          const ry = ((ev.clientX - r.left) / r.width - 0.5) * 6;
+          stage.style.transform = `perspective(1100px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+          stage.style.setProperty("--mx", ((ev.clientX - r.left) / r.width) * 100 + "%");
+          stage.style.setProperty("--my", ((ev.clientY - r.top) / r.height) * 100 + "%");
         };
         const leave = () => {
-          inner.style.transform = "";
+          stage.style.transform = "";
         };
-        tilt.addEventListener("mousemove", move);
-        tilt.addEventListener("mouseleave", leave);
+        stage.addEventListener("mousemove", move);
+        stage.addEventListener("mouseleave", leave);
         cleanups.push(() => {
-          tilt.removeEventListener("mousemove", move);
-          tilt.removeEventListener("mouseleave", leave);
+          stage.removeEventListener("mousemove", move);
+          stage.removeEventListener("mouseleave", leave);
         });
       }
     }
 
     return () => {
       window.removeEventListener("scroll", onScroll);
-      io.disconnect();
       cleanups.forEach((c) => c());
     };
   }, []);

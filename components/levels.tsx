@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "./lang-context";
+import { Reveal } from "./reveal";
 
 export default function Levels() {
   const { t } = useLang();
@@ -11,22 +12,24 @@ export default function Levels() {
   ] as const;
 
   return (
-    <section className="section section--alt" id="como">
-      <div className="section__head reveal">
+    <section className="section sec-dark" id="como">
+      <Reveal className="section__head">
         <span className="eyebrow">{t("how_eyebrow")}</span>
         <h2>{t("how_title")}</h2>
         <p className="section__lead">{t("how_lead")}</p>
-      </div>
+      </Reveal>
 
       <div className="levels">
-        {levels.map((l) => (
-          <div className="level spot reveal" key={l.n}>
-            <span className="level__n">{l.n}</span>
-            <div>
-              <h3>{t(l.tt)}</h3>
-              <p>{t(l.dd)}</p>
+        {levels.map((l, i) => (
+          <Reveal key={l.n} delay={i * 0.08}>
+            <div className="level">
+              <span className="level__n">{l.n}</span>
+              <div>
+                <h3>{t(l.tt)}</h3>
+                <p>{t(l.dd)}</p>
+              </div>
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "./lang-context";
+import { Reveal } from "./reveal";
 
 export default function Tech() {
   const { t } = useLang();
@@ -14,20 +15,22 @@ export default function Tech() {
   ] as const;
 
   return (
-    <section className="section section--alt" id="tecnologia">
-      <div className="section__head reveal">
+    <section className="section section--tint" id="tecnologia">
+      <Reveal className="section__head">
         <span className="eyebrow">{t("tech_eyebrow")}</span>
         <h2>{t("tech_title")}</h2>
         <p className="section__lead">{t("tech_lead")}</p>
-      </div>
+      </Reveal>
 
       <div className="cards cards--3">
-        {cards.map((c) => (
-          <article className="card card--tech spot reveal" key={c.tt}>
-            <div className="card__ico">{c.ico}</div>
-            <h3>{t(c.tt)}</h3>
-            <p>{t(c.dd)}</p>
-          </article>
+        {cards.map((c, i) => (
+          <Reveal key={c.tt} delay={(i % 3) * 0.08}>
+            <article className="card spot">
+              <div className="card__ico">{c.ico}</div>
+              <h3>{t(c.tt)}</h3>
+              <p>{t(c.dd)}</p>
+            </article>
+          </Reveal>
         ))}
       </div>
     </section>
