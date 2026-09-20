@@ -25,9 +25,9 @@ export const SITE = {
     intervalMs: 1400,
   },
 
-  /** Simulador do Triple Check: faixa de itens por ciclo. */
+  /** Simulador do Triple Check: faixa de itens por ciclo (animação da caixa). */
   tripleCheck: {
-    minItems: 8, // ILUSTRATIVO
-    maxItems: 15, // ILUSTRATIVO
+    minItems: 6, // ILUSTRATIVO
+    maxItems: 10, // ILUSTRATIVO
   },
 } as const;
