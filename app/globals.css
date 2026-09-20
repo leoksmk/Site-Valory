@@ -154,14 +154,39 @@ section{position:relative}
 .level p{color:var(--muted);font-size:.96rem}
 
 /* ============ TRIPLE CHECK ============ */
-.tcx{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
-.tcx__counters{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.tcx__card{background:rgba(255,255,255,.03);border:1px solid var(--goldbd);border-radius:var(--radius);padding:28px 22px;text-align:center;position:relative;overflow:hidden;transition:.3s}
-.tcx__card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-gold);opacity:.5;transition:opacity .3s}
-.tcx__id{font-family:var(--font-sora);font-weight:800;font-size:.95rem;color:var(--gold-3);letter-spacing:.05em}
-.tcx__name{display:block;color:var(--muted);font-size:.85rem;margin:6px 0 14px}
-.tcx__num{font-family:var(--font-sora);font-weight:800;font-size:3.3rem;line-height:1;display:block;color:#f4f2ec;transition:color .3s}
-.tcx__unit{font-size:.78rem;color:#7c7c85;text-transform:uppercase;letter-spacing:.12em}
+.tcx{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.tcx__stage-wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:stretch}
+
+/* cena da caixa */
+.tcx__scene{position:relative;height:360px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:radial-gradient(520px circle at 50% -10%,rgba(232,196,106,.1),transparent 60%),linear-gradient(180deg,#12151c,#0a0c11)}
+.tcx__dispenser{position:absolute;top:0;left:0;right:0;height:34px;background:linear-gradient(180deg,rgba(255,255,255,.05),transparent);border-bottom:1px solid var(--line-soft)}
+.tcx__nozzle{position:absolute;top:26px;left:50%;transform:translateX(-50%);width:56px;height:14px;border-radius:0 0 8px 8px;background:linear-gradient(180deg,#2a2f39,#1a1e26);border:1px solid var(--line);border-top:0;box-shadow:0 6px 16px -6px #000}
+.tcx__box{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);width:212px;height:172px;border:2px solid var(--goldbd);border-radius:5px 5px 12px 12px;overflow:hidden;background:linear-gradient(180deg,#0b0e13,#151a22);box-shadow:inset 0 22px 34px -22px #000,0 26px 55px -22px #000;transition:border-color .3s,box-shadow .3s}
+.tcx__box::after{content:"";position:absolute;top:0;left:0;right:0;height:16px;background:linear-gradient(180deg,rgba(0,0,0,.6),transparent);z-index:4;pointer-events:none}
+.tcx__box-inner{position:absolute;inset:0;z-index:1}
+.pill{position:absolute;top:0;left:0;width:30px;height:16px;border-radius:8px;opacity:0;transition:transform .5s cubic-bezier(.34,1.3,.5,1),opacity .18s;box-shadow:0 4px 10px -4px rgba(0,0,0,.7)}
+.pill.in{opacity:1}
+.pill.missed{filter:grayscale(.5) brightness(.7);outline:1px dashed rgba(255,107,111,.8)}
+.pill--a{background:linear-gradient(90deg,#e8c46a 0 50%,#f3ecdb 50% 100%)}
+.pill--b{background:linear-gradient(90deg,#cfd6e0 0 50%,#eef2f7 50% 100%);border-radius:10px}
+.pill--c{background:linear-gradient(90deg,#d9a92a 0 50%,#f0d488 50% 100%)}
+.tcx__box-tag{position:absolute;bottom:8px;right:10px;z-index:5;font-family:var(--font-sora);font-weight:700;font-size:.8rem;color:#cfcfd6;background:rgba(8,10,14,.7);border:1px solid var(--line);border-radius:8px;padding:3px 8px;backdrop-filter:blur(4px)}
+.tcx__box-tag b{color:var(--gold-3)}
+.tcx__box-label{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-family:var(--font-mono),ui-monospace,monospace;font-size:.62rem;letter-spacing:.18em;color:#6b6b73}
+.tcx__scan{position:absolute;left:6px;right:6px;top:0;height:2px;z-index:3;background:linear-gradient(90deg,transparent,var(--green),transparent);box-shadow:0 0 14px var(--green);animation:scan 1.5s ease-in-out infinite}
+@keyframes scan{0%{top:6px;opacity:.2}50%{opacity:1}100%{top:164px;opacity:.2}}
+.tcx__box.ok{border-color:rgba(79,214,138,.6);box-shadow:inset 0 22px 34px -22px #000,0 0 32px -6px rgba(79,214,138,.5)}
+.tcx__box.bad{animation:shake .4s;border-color:rgba(255,107,111,.6);box-shadow:inset 0 22px 34px -22px #000,0 0 32px -6px rgba(255,107,111,.5)}
+
+/* contadores (coluna) */
+.tcx__counters--v{display:flex;flex-direction:column;gap:14px}
+.tcx__card{background:rgba(255,255,255,.03);border:1px solid var(--goldbd);border-radius:var(--radius);padding:18px 20px;position:relative;overflow:hidden;transition:.3s;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.tcx__card::before{content:"";position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--grad-gold);opacity:.5;transition:opacity .3s}
+.tcx__card-top{display:flex;flex-direction:column;gap:2px;flex:1;min-width:120px}
+.tcx__id{font-family:var(--font-sora);font-weight:800;font-size:.9rem;color:var(--gold-3);letter-spacing:.05em}
+.tcx__name{color:var(--muted);font-size:.82rem}
+.tcx__num{font-family:var(--font-sora);font-weight:800;font-size:2.4rem;line-height:1;color:#f4f2ec;transition:color .3s}
+.tcx__unit{font-size:.72rem;color:#7c7c85;text-transform:uppercase;letter-spacing:.12em}
 .tcx__card.is-run{border-color:var(--gold-2);box-shadow:0 0 0 1px var(--gold-2),0 14px 40px -14px rgba(232,196,106,.5)}
 .tcx__card.is-ok{border-color:rgba(79,214,138,.6)}
 .tcx__card.is-ok .tcx__num{color:var(--green)}
@@ -237,7 +262,7 @@ section{position:relative}
   .hero__visual{order:-1}
   .stats{grid-template-columns:repeat(2,1fr)}
   .cards--3{grid-template-columns:1fr}
-  .tcx__counters{grid-template-columns:1fr}
+  .tcx__stage-wrap{grid-template-columns:1fr}
   .tcx__panel{flex-direction:column;align-items:stretch}
   .tcx__controls{justify-content:space-between}
   .demo__shots{grid-template-columns:1fr}
