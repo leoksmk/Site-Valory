@@ -5,82 +5,137 @@ import { useLang } from "./lang-context";
 import { Reveal } from "./reveal";
 import { SITE } from "@/lib/site-data";
 
-type State = "idle" | "run" | "ok" | "bad";
+type Phase = "idle" | "cnc" | "peso" | "visao" | "ok" | "bad";
 
-// layout da caixa (px, coordenadas dentro da cena)
-const PER_ROW = 5;
-const SLOT_W = 34;
-const SLOT_H = 20;
-const PILL_STYLES = ["a", "b", "c", "a", "b", "c", "a", "b", "c", "a"] as const;
+const UNIT_G = 12; // peso por caixa de remédio (ilustrativo)
+const COLS = 4;
+const IW = 50;
+const IH = 30;
+const GAPX = 8;
+const GAPY = 10;
+const PADX = 16;
+const BOX_H = 212;
+const MED_TINTS = ["t1", "t2", "t3", "t4", "t2", "t1", "t3", "t4", "t1", "t2"] as const;
 
 export default function TripleCheck() {
   const { t } = useLang();
-  const [counts, setCounts] = useState<[number, number, number]>([0, 0, 0]);
-  const [state, setState] = useState<State>("idle");
-  const [force, setForce] = useState(false);
+  const [phase, setPhase] = useState<Phase>("idle");
   const [total, setTotal] = useState(0);
-  const [landed, setLanded] = useState(0);
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
-  const to = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [placed, setPlaced] = useState(0);
+  const [weight, setWeight] = useState(0);
+  const [scanIndex, setScanIndex] = useState(0);
+  const [force, setForce] = useState(false);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const raf = useRef<number[]>([]);
+
+  const missedIndex = force ? total - 1 : -1;
+  const c1 = placed;
+  const c2 = Math.round(weight / UNIT_G);
+  const c3 = missedIndex >= 0 ? Math.max(0, scanIndex - (scanIndex > missedIndex ? 1 : 0)) : scanIndex;
 
   function clearAll() {
-    if (timer.current) clearInterval(timer.current);
-    if (to.current) clearTimeout(to.current);
-    timer.current = null;
-    to.current = null;
+    timers.current.forEach((x) => {
+      clearInterval(x);
+      clearTimeout(x);
+    });
+    raf.current.forEach((id) => cancelAnimationFrame(id));
+    timers.current = [];
+    raf.current = [];
   }
 
   function reset() {
     clearAll();
-    setState("idle");
-    setCounts([0, 0, 0]);
-    setLanded(0);
+    setPhase("idle");
     setTotal(0);
+    setPlaced(0);
+    setWeight(0);
+    setScanIndex(0);
   }
 
   function run() {
-    if (state === "run") return;
+    if (phase !== "idle" && phase !== "ok" && phase !== "bad") return;
     clearAll();
     const { minItems, maxItems } = SITE.tripleCheck;
     const tot = minItems + Math.floor(Math.random() * (maxItems - minItems + 1));
     setTotal(tot);
-    setState("run");
-    setCounts([0, 0, 0]);
-    setLanded(0);
-    let step = 0;
-    timer.current = setInterval(() => {
-      step++;
-      setLanded(step);
-      // #1 CNC e #2 Peso contam cada item; #3 Visão "perde" o último quando forçamos divergência
-      const visual = force ? Math.min(step, tot - 1) : step;
-      setCounts([step, step, visual]);
-      if (step >= tot) {
-        clearAll();
-        to.current = setTimeout(() => setState(force ? "bad" : "ok"), 520);
+    setPlaced(0);
+    setWeight(0);
+    setScanIndex(0);
+    setPhase("cnc");
+
+    // ETAPA 1 — CNC: coleta e posiciona cada caixa
+    let n = 0;
+    const iv = setInterval(() => {
+      n++;
+      setPlaced(n);
+      if (n >= tot) {
+        clearInterval(iv);
+        timers.current.push(setTimeout(() => startPeso(tot), 620));
       }
-    }, 320);
+    }, 300);
+    timers.current.push(iv);
   }
 
-  const cardCls =
-    state === "run" ? " is-run" : state === "ok" ? " is-ok" : state === "bad" ? " is-bad" : "";
-  const names = ["tc_1_t", "tc_2_t", "tc_3_t"] as const;
-  const statusKey =
-    state === "run" ? "tc_status_run"
-    : state === "ok" ? "tc_status_ok"
-    : state === "bad" ? "tc_status_bad"
-    : "tc_status_idle";
+  function startPeso(tot: number) {
+    setPhase("peso");
+    const target = tot * UNIT_G;
+    const dur = 1300;
+    const start = performance.now();
+    const step = (now: number) => {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setWeight(target * eased);
+      if (p < 1) raf.current.push(requestAnimationFrame(step));
+      else timers.current.push(setTimeout(() => startVisao(tot), 620));
+    };
+    raf.current.push(requestAnimationFrame(step));
+  }
 
-  // posições de repouso das cápsulas dentro da caixa (px, origem = topo da caixa)
-  const BOX_INNER_H = 172;
-  const pills = Array.from({ length: Math.max(total, 0) }, (_, i) => {
-    const row = Math.floor(i / PER_ROW);
-    const col = i % PER_ROW;
-    const restX = 16 + col * SLOT_W + (row % 2) * 6;
-    const restY = BOX_INNER_H - 26 - row * SLOT_H; // empilha do fundo para cima
-    const isLanded = i < landed;
-    // a #3 (visão) "não vê" o último item quando há divergência forçada
-    const missed = state !== "idle" && force && i === total - 1 && i < landed;
-    return { i, restX, restY, isLanded, missed, style: PILL_STYLES[i % PILL_STYLES.length] };
+  function startVisao(tot: number) {
+    setPhase("visao");
+    let i = 0;
+    const iv = setInterval(() => {
+      i++;
+      setScanIndex(i);
+      if (i >= tot) {
+        clearInterval(iv);
+        timers.current.push(
+          setTimeout(() => setPhase(force ? "bad" : "ok"), 800)
+        );
+      }
+    }, 230);
+    timers.current.push(iv);
+  }
+
+  const running = phase === "cnc" || phase === "peso" || phase === "visao";
+  const statusKey =
+    phase === "cnc" ? "tc_ph_cnc"
+    : phase === "peso" ? "tc_ph_peso"
+    : phase === "visao" ? "tc_ph_visao"
+    : phase === "ok" ? "tc_status_ok"
+    : phase === "bad" ? "tc_status_bad"
+    : "tc_status_idle";
+  const statusState =
+    phase === "ok" ? "ok" : phase === "bad" ? "bad" : running ? "run" : "idle";
+
+  // etapas do stepper
+  const steps = [
+    { key: "tc_1_t", n: c1, active: phase === "cnc", done: ["peso", "visao", "ok", "bad"].includes(phase) },
+    { key: "tc_2_t", n: c2, active: phase === "peso", done: ["visao", "ok", "bad"].includes(phase) },
+    { key: "tc_3_t", n: c3, active: phase === "visao", done: ["ok", "bad"].includes(phase) },
+  ] as const;
+
+  const boxState = phase === "ok" ? " ok" : phase === "bad" ? " bad" : "";
+
+  const items = Array.from({ length: Math.max(total, 0) }, (_, i) => {
+    const row = Math.floor(i / COLS);
+    const col = i % COLS;
+    const restX = PADX + col * (IW + GAPX);
+    const restY = BOX_H - 20 - row * (IH + GAPY);
+    const isPlaced = i < placed;
+    const seen = (phase === "visao" || phase === "ok" || phase === "bad") && i < scanIndex && i !== missedIndex;
+    const missed = (phase === "visao" || phase === "bad") && i === missedIndex && scanIndex > i;
+    return { i, restX, restY, isPlaced, seen, missed, tint: MED_TINTS[i % MED_TINTS.length] };
   });
 
   return (
@@ -92,57 +147,76 @@ export default function TripleCheck() {
       </Reveal>
 
       <Reveal className="tcx">
-        <div className="tcx__stage-wrap">
-          {/* CENA: caixa recebendo os medicamentos */}
-          <div className="tcx__scene">
-            <div className="tcx__dispenser">
-              <span className="tcx__nozzle" />
-            </div>
-            <div className={`tcx__box${state === "ok" ? " ok" : ""}${state === "bad" ? " bad" : ""}`}>
-              <div className="tcx__box-inner">
-                {pills.map((p) => (
-                  <span
-                    key={p.i}
-                    className={`pill pill--${p.style}${p.isLanded ? " in" : ""}${p.missed ? " missed" : ""}`}
-                    style={
-                      p.isLanded
-                        ? { transform: `translate(${p.restX}px, ${p.restY}px)` }
-                        : { transform: `translate(${16 + (p.i % PER_ROW) * SLOT_W}px, -36px)` }
-                    }
-                  />
-                ))}
+        {/* STEPPER — 3 etapas */}
+        <div className="tcx__steps">
+          {steps.map((s, i) => (
+            <div
+              key={s.key}
+              className={`tcx__step${s.active ? " active" : ""}${s.done ? " done" : ""}${
+                phase === "bad" && i === 2 ? " bad" : ""
+              }`}
+            >
+              <span className="tcx__step-badge">{i + 1}</span>
+              <div className="tcx__step-txt">
+                <span className="tcx__step-name">{t(s.key)}</span>
+                <span className="tcx__step-num">
+                  {s.n}
+                  <small>{t("tc_unit")}</small>
+                </span>
               </div>
-              {/* feixe da visão computacional */}
-              {state === "run" && <span className="tcx__scan" />}
-              <span className="tcx__box-tag">
-                <b>{landed}</b>/{total || "—"}
-              </span>
             </div>
-            <span className="tcx__box-label">CAIXA · RAC</span>
-          </div>
-
-          {/* CONTADORES */}
-          <div className="tcx__counters tcx__counters--v">
-            {[0, 1, 2].map((i) => (
-              <article className={`tcx__card${cardCls}`} key={i}>
-                <div className="tcx__card-top">
-                  <span className="tcx__id">#{i + 1}</span>
-                  <span className="tcx__name">{t(names[i])}</span>
-                </div>
-                <span className="tcx__num">{counts[i]}</span>
-                <span className="tcx__unit">{t("tc_unit")}</span>
-              </article>
-            ))}
-          </div>
+          ))}
         </div>
 
+        {/* CENA */}
+        <div className={`tcx__scene phase-${phase}`}>
+          <div className="tcx__stagelbl">{t(statusKey)}</div>
+
+          <div className={`tcx__box${boxState}`}>
+            <div className="tcx__box-flap" />
+            <div className="tcx__box-inner">
+              {items.map((it) => (
+                <span
+                  key={it.i}
+                  className={`med med--${it.tint}${it.isPlaced ? " in" : ""}${it.seen ? " seen" : ""}${
+                    it.missed ? " miss" : ""
+                  }`}
+                  style={
+                    it.isPlaced
+                      ? { transform: `translate(${it.restX}px, ${it.restY}px)` }
+                      : { transform: `translate(${PADX + (it.i % COLS) * (IW + GAPX)}px, -46px)` }
+                  }
+                >
+                  <b />
+                </span>
+              ))}
+            </div>
+            {(phase === "visao") && <span className="tcx__scan" />}
+            <span className="tcx__box-tag">
+              <b>{Math.max(placed, 0)}</b>/{total || "—"}
+            </span>
+          </div>
+
+          {/* balança (etapa peso) */}
+          <div className={`tcx__scale${phase === "peso" ? " on" : ""}`}>
+            <div className="tcx__scale-plate" />
+            <div className="tcx__scale-read">
+              <span className="tcx__scale-k">{t("tc_weight")}</span>
+              <span className="tcx__scale-v">{Math.round(weight)}<small>g</small></span>
+            </div>
+          </div>
+
+          <span className="tcx__scene-cap">CAIXA · RAC</span>
+        </div>
+
+        {/* PAINEL */}
         <div className="tcx__panel">
-          <div className="tcx__status" data-state={state}>
+          <div className="tcx__status" data-state={statusState}>
             <i className="tcx__led" />
             <span>{t(statusKey)}</span>
           </div>
           <div className="tcx__controls">
-            <button className="btn btn--gold" onClick={run} disabled={state === "run"}>
+            <button className="btn btn--gold" onClick={run} disabled={running}>
               {t("tc_sim_btn")}
             </button>
             <button className="btn btn--ghost" onClick={reset}>
@@ -154,7 +228,7 @@ export default function TripleCheck() {
                 checked={force}
                 onChange={(e) => {
                   setForce(e.target.checked);
-                  if (state !== "run") reset();
+                  if (!running) reset();
                 }}
               />
               <span className="tcx__switch" />
