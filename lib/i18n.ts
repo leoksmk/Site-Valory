@@ -36,6 +36,10 @@ export const DICT = {
     tc_sim_btn: "Simular ciclo", tc_sim_reset: "Reiniciar", tc_toggle: "Forçar divergência",
     tc_status_idle: "Aguardando ciclo", tc_status_run: "Executando ciclo…",
     tc_status_ok: "Sincronizado · Zero divergência", tc_status_bad: "Divergência detectada · Processo bloqueado",
+    tc_ph_cnc: "Etapa 1/3 · Coleta e contagem na CNC",
+    tc_ph_peso: "Etapa 2/3 · Conferência por peso",
+    tc_ph_visao: "Etapa 3/3 · Conferência por visão",
+    tc_weight: "Peso", tc_step: "Etapa",
 
     tech_eyebrow: "Tecnologia", tech_title: "O que há por dentro",
     tech_lead: "Engenharia industrial e software se encontram numa arquitetura distribuída, medindo e registrando cada ciclo.",
@@ -95,6 +99,10 @@ export const DICT = {
     tc_sim_btn: "Simulate cycle", tc_sim_reset: "Reset", tc_toggle: "Force divergence",
     tc_status_idle: "Waiting for cycle", tc_status_run: "Running cycle…",
     tc_status_ok: "Synced · Zero divergence", tc_status_bad: "Divergence detected · Process blocked",
+    tc_ph_cnc: "Step 1/3 · Pick & CNC count",
+    tc_ph_peso: "Step 2/3 · Weight check",
+    tc_ph_visao: "Step 3/3 · Vision check",
+    tc_weight: "Weight", tc_step: "Step",
 
     tech_eyebrow: "Technology", tech_title: "What's inside",
     tech_lead: "Industrial engineering meets software in a distributed architecture, measuring and logging every cycle.",
