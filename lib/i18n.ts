@@ -3,7 +3,10 @@ export type Lang = "pt" | "en";
 export const DICT = {
   pt: {
     nav_solution: "A Solução", nav_how: "Como Funciona", nav_triple: "Triple Check",
-    nav_tech: "Tecnologia", nav_demo: "Demonstração", nav_contact: "Contato",
+    nav_tech: "Tecnologia", nav_pres: "Apresentação", nav_demo: "Demonstração", nav_contact: "Contato",
+    pres_eyebrow: "Apresentação", pres_title: "Conheça o projeto",
+    pres_lead: "Uma visão geral do RAC em slides — conceito, arquitetura e evolução.",
+    pres_fs: "Abrir em tela cheia",
 
     hero_badge: "Fase 2 → Fase 3 · Em integração",
     hero_title_1: "Alocação de medicamentos",
@@ -66,7 +69,10 @@ export const DICT = {
   },
   en: {
     nav_solution: "The Solution", nav_how: "How It Works", nav_triple: "Triple Check",
-    nav_tech: "Technology", nav_demo: "Demo", nav_contact: "Contact",
+    nav_tech: "Technology", nav_pres: "Presentation", nav_demo: "Demo", nav_contact: "Contact",
+    pres_eyebrow: "Presentation", pres_title: "Explore the project",
+    pres_lead: "An overview of RAC in slides — concept, architecture and progress.",
+    pres_fs: "Open fullscreen",
 
     hero_badge: "Phase 2 → Phase 3 · Integrating",
     hero_title_1: "Medication allocation,",

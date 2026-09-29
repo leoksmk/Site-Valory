@@ -8,6 +8,7 @@ import Solution from "@/components/solution";
 import Levels from "@/components/levels";
 import TripleCheck from "@/components/triple-check";
 import Tech from "@/components/tech";
+import Presentation from "@/components/presentation";
 import Demo from "@/components/demo";
 import Contact from "@/components/contact";
 import Footer from "@/components/footer";
@@ -26,6 +27,7 @@ export default function Page() {
         <Levels />
         <TripleCheck />
         <Tech />
+        <Presentation />
         <Demo />
         <Contact />
       </main>
