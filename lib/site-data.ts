@@ -30,4 +30,14 @@ export const SITE = {
     minItems: 6, // ILUSTRATIVO
     maxItems: 10, // ILUSTRATIVO
   },
+
+  /** Apresentação do projeto (Google Slides publicado). */
+  presentation: {
+    // URL de EMBED (troque /pub por /embed). Para atualizar, publique de novo o slide.
+    embedUrl:
+      "https://docs.google.com/presentation/d/e/2PACX-1vTmZILPZjMQfQYR6T6WmJEUGC1g_SwE5owQ8ifjiBT-fhMiQwmNXu_-x-cqYv3uRZ-RgUXavZeRXb_i/embed?start=true&loop=true&delayms=3000",
+    // URL pública para abrir em tela cheia.
+    pubUrl:
+      "https://docs.google.com/presentation/d/e/2PACX-1vTmZILPZjMQfQYR6T6WmJEUGC1g_SwE5owQ8ifjiBT-fhMiQwmNXu_-x-cqYv3uRZ-RgUXavZeRXb_i/pub?start=true&loop=true&delayms=3000&slide=id.p",
+  },
 } as const;

@@ -9,6 +9,7 @@ const LINKS: Array<{ href: string; key: Parameters<ReturnType<typeof useLang>["t
   { href: "#como", key: "nav_how" },
   { href: "#triplecheck", key: "nav_triple" },
   { href: "#tecnologia", key: "nav_tech" },
+  { href: "#apresentacao", key: "nav_pres" },
   { href: "#demo", key: "nav_demo" },
   { href: "#contato", key: "nav_contact" },
 ];
