@@ -10,7 +10,7 @@ export default function Demo() {
   const shots = ["Dashboard", "Mapa", "Ordens"];
   const caps = ["demo_s1", "demo_s2", "demo_s3"] as const;
 
-  // reproduz em 1,5×
+  // reproduz em 1,5× (como um GIF: sem controles, em loop)
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -27,7 +27,7 @@ export default function Demo() {
   }, []);
 
   return (
-    <section className="section sec-dark" id="demo">
+    <section className="section" id="demo">
       <Reveal className="section__head">
         <span className="eyebrow">{t("demo_eyebrow")}</span>
         <h2>{t("demo_title")}</h2>
@@ -39,14 +39,12 @@ export default function Demo() {
           <video
             ref={videoRef}
             src="/ihm-demo.mp4"
-            controls
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
           />
-          <span className="demo__badge">IHM · 1,5×</span>
         </div>
       </Reveal>
 

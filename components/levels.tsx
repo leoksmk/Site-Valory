@@ -12,7 +12,7 @@ export default function Levels() {
   ] as const;
 
   return (
-    <section className="section sec-dark" id="como">
+    <section className="section section--tint" id="como">
       <Reveal className="section__head">
         <span className="eyebrow">{t("how_eyebrow")}</span>
         <h2>{t("how_title")}</h2>

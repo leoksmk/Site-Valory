@@ -15,7 +15,7 @@ export default function Tech() {
   ] as const;
 
   return (
-    <section className="section section--tint" id="tecnologia">
+    <section className="section" id="tecnologia">
       <Reveal className="section__head">
         <span className="eyebrow">{t("tech_eyebrow")}</span>
         <h2>{t("tech_title")}</h2>

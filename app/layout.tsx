@@ -40,6 +40,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`${sora.variable} ${inter.variable} ${mono.variable}`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var t=localStorage.getItem('valory_theme');document.documentElement.dataset.theme=(t==='dark'||t==='pearl')?t:'pearl';}catch(e){document.documentElement.dataset.theme='pearl';}})();",
+          }}
+        />
+      </head>
       <body>
         <LangProvider>{children}</LangProvider>
       </body>
