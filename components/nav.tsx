@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useLang } from "./lang-context";
+import ThemeToggle from "./theme-toggle";
 
 const LINKS: Array<{ href: string; key: Parameters<ReturnType<typeof useLang>["t"]>[0] }> = [
   { href: "#solucao", key: "nav_solution" },
@@ -42,6 +43,7 @@ export default function Nav() {
       </nav>
 
       <div className="nav__actions">
+        <ThemeToggle />
         <button className="lang" onClick={toggle} aria-label="Idioma">
           <span className={`lang__pt${lang === "pt" ? " is-active" : ""}`}>PT</span>
           <span className="lang__sep">/</span>

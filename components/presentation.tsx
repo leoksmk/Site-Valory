@@ -7,7 +7,7 @@ import { SITE } from "@/lib/site-data";
 export default function Presentation() {
   const { t } = useLang();
   return (
-    <section className="section sec-dark" id="apresentacao">
+    <section className="section section--tint" id="apresentacao">
       <Reveal className="section__head">
         <span className="eyebrow">{t("pres_eyebrow")}</span>
         <h2>{t("pres_title")}</h2>
