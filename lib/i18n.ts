@@ -57,6 +57,7 @@ export const DICT = {
     demo_lead: "Operação completa sem hardware: criação de ordens, telemetria simulada e Triple Check ao vivo — veja a IHM funcionando.",
     demo_ph_1: "Espaço reservado para o vídeo da IHM", demo_ph_2: "(substituir por vídeo/GIF)",
     demo_s1: "Dashboard de operação", demo_s2: "Mapa da bancada", demo_s3: "Ordens e rastreabilidade",
+    demo_estrutura: "Estrutura da bancada", demo_ihm: "IHM — operação", demo_soon: "Vídeo em breve",
 
     ct_eyebrow: "Contato", ct_title: "Vamos conversar sobre automação",
     ct_lead: "Quer ver o RAC de perto ou levar essa solução para a sua operação? Deixe seu contato — a Valory retorna.",
@@ -123,6 +124,7 @@ export const DICT = {
     demo_lead: "Full operation without hardware: order creation, simulated telemetry and live Triple Check — see the HMI in action.",
     demo_ph_1: "Reserved space for the HMI video", demo_ph_2: "(replace with video/GIF)",
     demo_s1: "Operation dashboard", demo_s2: "Workbench map", demo_s3: "Orders & traceability",
+    demo_estrutura: "Workbench structure", demo_ihm: "HMI — operation", demo_soon: "Video coming soon",
 
     ct_eyebrow: "Contact", ct_title: "Let's talk automation",
     ct_lead: "Want to see RAC up close or bring this solution to your operation? Leave your contact — Valory will get back to you.",
