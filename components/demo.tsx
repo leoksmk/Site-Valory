@@ -1,12 +1,30 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useLang } from "./lang-context";
 import { Reveal } from "./reveal";
 
 export default function Demo() {
   const { t } = useLang();
+  const videoRef = useRef<HTMLVideoElement>(null);
   const shots = ["Dashboard", "Mapa", "Ordens"];
   const caps = ["demo_s1", "demo_s2", "demo_s3"] as const;
+
+  // reproduz em 1,5×
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const setRate = () => {
+      v.playbackRate = 1.5;
+    };
+    setRate();
+    v.addEventListener("loadedmetadata", setRate);
+    v.addEventListener("play", setRate);
+    return () => {
+      v.removeEventListener("loadedmetadata", setRate);
+      v.removeEventListener("play", setRate);
+    };
+  }, []);
 
   return (
     <section className="section sec-dark" id="demo">
@@ -16,15 +34,19 @@ export default function Demo() {
         <p className="section__lead">{t("demo_lead")}</p>
       </Reveal>
 
-      {/* TROCAR: vídeo/GIF da IHM no lugar de .demo__ph */}
-      <Reveal className="demo__media spot">
-        <div className="demo__ph">
-          <div className="demo__play">▶</div>
-          <p>
-            {t("demo_ph_1")}
-            <br />
-            <small>{t("demo_ph_2")}</small>
-          </p>
+      <Reveal className="demo__media">
+        <div className="demo__video">
+          <video
+            ref={videoRef}
+            src="/ihm-demo.mp4"
+            controls
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          />
+          <span className="demo__badge">IHM · 1,5×</span>
         </div>
       </Reveal>
 

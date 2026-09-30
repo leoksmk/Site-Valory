@@ -54,7 +54,7 @@ export const DICT = {
     tech_c6_t: "IHM Web", tech_c6_d: "Painel central em tempo real: contadores, telemetria, ordens e console de operação.",
 
     demo_eyebrow: "Demonstração", demo_title: "IHM em modo demo",
-    demo_lead: "Operação completa sem hardware: criação de ordens, telemetria simulada e Triple Check ao vivo. Vídeo em breve.",
+    demo_lead: "Operação completa sem hardware: criação de ordens, telemetria simulada e Triple Check ao vivo — veja a IHM funcionando.",
     demo_ph_1: "Espaço reservado para o vídeo da IHM", demo_ph_2: "(substituir por vídeo/GIF)",
     demo_s1: "Dashboard de operação", demo_s2: "Mapa da bancada", demo_s3: "Ordens e rastreabilidade",
 
@@ -120,7 +120,7 @@ export const DICT = {
     tech_c6_t: "Web HMI", tech_c6_d: "A real-time central panel: counters, telemetry, orders and an operation console.",
 
     demo_eyebrow: "Demo", demo_title: "HMI in demo mode",
-    demo_lead: "Full operation without hardware: order creation, simulated telemetry and live Triple Check. Video coming soon.",
+    demo_lead: "Full operation without hardware: order creation, simulated telemetry and live Triple Check — see the HMI in action.",
     demo_ph_1: "Reserved space for the HMI video", demo_ph_2: "(replace with video/GIF)",
     demo_s1: "Operation dashboard", demo_s2: "Workbench map", demo_s3: "Orders & traceability",
 
