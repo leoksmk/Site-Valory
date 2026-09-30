@@ -254,17 +254,26 @@ section{position:relative}
 .pres__fs{font-family:var(--font-sora);font-weight:600;font-size:.9rem;color:var(--gold);border:1px solid var(--goldbd);border-radius:999px;padding:10px 20px;transition:.2s}
 .pres__fs:hover{border-color:var(--gold);background:var(--goldbg);transform:translateY(-2px)}
 
-/* ============ DEMO ============ */
-.demo__media{margin-bottom:26px;border-radius:var(--radius)}
-.demo__video{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--goldbd);background:#000;box-shadow:var(--shadow-lg);display:flex;justify-content:center}
-.demo__video video{width:100%;max-height:76vh;object-fit:contain;display:block;background:#000}
-.demo__shots{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.shot{border-radius:14px;overflow:hidden;border:1px solid var(--line);transition:.25s}
-.shot:hover{transform:translateY(-4px);border-color:var(--goldbd)}
-.shot__ph{aspect-ratio:16/10;display:grid;place-items:center;font-family:var(--font-sora);font-weight:600;color:var(--muted);background:repeating-linear-gradient(45deg,var(--surface),var(--surface) 12px,var(--surface-2) 12px,var(--surface-2) 24px)}
-.shot__video{aspect-ratio:16/10;background:#000;overflow:hidden}
-.shot__video video{width:100%;height:100%;object-fit:cover;display:block}
-.shot figcaption{padding:12px 16px;font-size:.85rem;color:var(--muted);background:var(--surface)}
+/* ============ DEMO (galeria com player) ============ */
+.demo__stage-wrap{margin-bottom:22px}
+.demo__stage{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--goldbd);background:#000;box-shadow:var(--shadow-lg)}
+.demo__stage-media{position:relative;width:100%;aspect-ratio:16/9;background:#000;display:flex;align-items:center;justify-content:center}
+.demo__stage-media video{width:100%;height:100%;object-fit:contain;display:block;background:#000}
+.demo__stage-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#9aa3b0;height:100%;width:100%;background:linear-gradient(160deg,#14181f,#0a0c11)}
+.demo__play{width:64px;height:64px;border-radius:50%;background:var(--grad-gold-bright);color:#231803;display:grid;place-items:center;font-size:1.4rem;padding-left:4px;box-shadow:0 10px 30px -8px rgba(232,196,106,.5)}
+.demo__cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:14px 18px;font-family:var(--font-sora);font-weight:600;font-size:.95rem;color:#f4f2ec;background:linear-gradient(180deg,transparent,rgba(0,0,0,.72));display:flex;align-items:flex-end;pointer-events:none}
+.demo__thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.demo__thumb{display:flex;flex-direction:column;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;padding:0;text-align:left;transition:transform .25s,border-color .25s,box-shadow .25s}
+.demo__thumb:hover{transform:translateY(-4px);border-color:var(--goldbd)}
+.demo__thumb.is-active{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 16px 34px -18px rgba(184,134,11,.4)}
+.demo__thumb-media{position:relative;aspect-ratio:16/10;background:#000;overflow:hidden}
+.demo__thumb-media video{width:100%;height:100%;object-fit:cover;display:block}
+.demo__thumb-ph{position:absolute;inset:0;background:repeating-linear-gradient(45deg,#14181f,#14181f 12px,#0f1218 12px,#0f1218 24px)}
+.demo__thumb-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:rgba(8,10,14,.6);border:1px solid rgba(255,255,255,.25);color:#fff;display:grid;place-items:center;font-size:.8rem;padding-left:3px;backdrop-filter:blur(4px);transition:.2s}
+.demo__thumb:hover .demo__thumb-play,.demo__thumb.is-active .demo__thumb-play{background:var(--grad-gold-bright);color:#231803;border-color:transparent}
+.demo__thumb-cap{padding:11px 14px;font-size:.85rem;font-weight:600;color:var(--ink);background:var(--surface)}
+.demo__thumb.is-active .demo__thumb-cap{color:var(--gold)}
+@media (max-width:760px){.demo__thumbs{grid-template-columns:repeat(2,1fr)}}
 
 /* ============ CONTACT ============ */
 .contact{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}

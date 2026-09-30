@@ -1,19 +1,35 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "./lang-context";
 import { Reveal } from "./reveal";
+import type { TKey } from "@/lib/i18n";
+
+type Clip = { id: string; key: TKey; src: string | null; rate?: number };
+
+// A bancada/estrutura vem primeiro (padrão). src null = placeholder até o vídeo chegar.
+const CLIPS: Clip[] = [
+  { id: "estrutura", key: "demo_estrutura", src: null }, // TROCAR: /demo-estrutura.webm
+  { id: "ihm", key: "demo_ihm", src: "/ihm-demo.mp4", rate: 1.5 },
+  { id: "dashboard", key: "demo_s1", src: "/demo-dashboard.webm" },
+  { id: "ordens", key: "demo_s3", src: "/demo-ordens.webm" },
+];
 
 export default function Demo() {
   const { t } = useLang();
-  const mainRef = useRef<HTMLVideoElement>(null);
+  const [active, setActive] = useState(0);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const clip = CLIPS[active];
 
-  // vídeo principal (IHM) em 1,5×
+  // velocidade por clipe (IHM em 1,5×)
   useEffect(() => {
-    const v = mainRef.current;
+    const v = videoRef.current;
     if (!v) return;
+    const rate = clip.rate ?? 1;
     const setRate = () => {
-      v.playbackRate = 1.5;
+      v.playbackRate = rate;
     };
     setRate();
     v.addEventListener("loadedmetadata", setRate);
@@ -22,13 +38,15 @@ export default function Demo() {
       v.removeEventListener("loadedmetadata", setRate);
       v.removeEventListener("play", setRate);
     };
-  }, []);
+  }, [active, clip.rate]);
 
-  const shots = [
-    { key: "demo_s1", src: "/demo-dashboard.webm" }, // Dashboard
-    { key: "demo_s2", src: null }, // Mapa (placeholder)
-    { key: "demo_s3", src: "/demo-ordens.webm" }, // Ordens SD serviço
-  ] as const;
+  function choose(i: number) {
+    setActive(i);
+    // o escolhido "sobe" para o display
+    requestAnimationFrame(() => {
+      stageRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
 
   return (
     <section className="section" id="demo">
@@ -38,25 +56,60 @@ export default function Demo() {
         <p className="section__lead">{t("demo_lead")}</p>
       </Reveal>
 
-      <Reveal className="demo__media">
-        <div className="demo__video">
-          <video ref={mainRef} src="/ihm-demo.mp4" autoPlay muted loop playsInline preload="auto" />
+      {/* DISPLAY em destaque */}
+      <Reveal className="demo__stage-wrap">
+        <div className="demo__stage" ref={stageRef}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={clip.id}
+              className="demo__stage-media"
+              initial={{ opacity: 0, y: 16, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4, ease: [0.22, 0.7, 0.2, 1] }}
+            >
+              {clip.src ? (
+                <video
+                  ref={videoRef}
+                  src={clip.src}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                />
+              ) : (
+                <div className="demo__stage-ph">
+                  <div className="demo__play">▶</div>
+                  <p>{t("demo_soon")}</p>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
+          <div className="demo__cap">{t(clip.key)}</div>
         </div>
       </Reveal>
 
-      <div className="demo__shots">
-        {shots.map((s, i) => (
-          <Reveal key={s.key} delay={i * 0.08}>
-            <figure className="shot">
-              {s.src ? (
-                <div className="shot__video">
-                  <video src={s.src} autoPlay muted loop playsInline preload="metadata" />
-                </div>
-              ) : (
-                <div className="shot__ph">{t(s.key).split(" ")[0]}</div>
-              )}
-              <figcaption>{t(s.key)}</figcaption>
-            </figure>
+      {/* SELETOR (miniaturas) */}
+      <div className="demo__thumbs">
+        {CLIPS.map((c, i) => (
+          <Reveal key={c.id} delay={i * 0.06}>
+            <button
+              type="button"
+              className={`demo__thumb${i === active ? " is-active" : ""}`}
+              onClick={() => choose(i)}
+              aria-label={t(c.key)}
+            >
+              <div className="demo__thumb-media">
+                {c.src ? (
+                  <video src={`${c.src}#t=0.2`} muted playsInline preload="metadata" />
+                ) : (
+                  <span className="demo__thumb-ph" />
+                )}
+                <span className="demo__thumb-play">▶</span>
+              </div>
+              <span className="demo__thumb-cap">{t(c.key)}</span>
+            </button>
           </Reveal>
         ))}
       </div>
