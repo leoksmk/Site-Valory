@@ -12,7 +12,7 @@ export const SITE = {
    * Chave pública gerada em https://web3forms.com para o e-mail da equipe;
    * as mensagens chegam nesse e-mail. A chave pode ficar no código (é pública).
    */
-  web3formsKey: "COLE_A_CHAVE_AQUI",
+  web3formsKey: "5d65a73c-ed01-44e9-bcc4-a48bb3a076de",
 
   /**
    * Painel de telemetria do hero: SIMULAÇÃO no front-end (valores ilustrativos).
