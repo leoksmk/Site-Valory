@@ -40,9 +40,8 @@ npm start       # sobe o build
 
 ## Formulário de contato
 
-O formulário (`components/contact.tsx`) envia direto do navegador para o FormSubmit (grátis, sem chave),
-destino em `SITE.contactInbox` (`lib/site-data.ts`). No primeiro envio chega um e-mail de ativação; clique em "Activate".
-Depois troque o e-mail em `contactInbox` pelo código aleatório que o FormSubmit fornece.
+O formulário (`components/contact.tsx`) envia direto do navegador para o Web3Forms (grátis, 250 envios/mês).
+A chave pública fica em `SITE.web3formsKey` (`lib/site-data.ts`); gere em https://web3forms.com com o e-mail que deve receber as mensagens.
 
 ## O que ainda falta trocar (placeholders)
 

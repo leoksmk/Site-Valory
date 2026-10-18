@@ -16,14 +16,14 @@ export default function Contact() {
     e.preventDefault();
     setStatus("sending");
     try {
-      const res = await fetch(`https://formsubmit.co/ajax/${SITE.contactInbox}`, {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          _subject: `Contato pelo site VALORY · ${form.name}`,
-          _template: "table",
-          _captcha: "false",
-          _replyto: form.email,
+          access_key: SITE.web3formsKey,
+          subject: `Contato pelo site VALORY · ${form.name}`,
+          from_name: "Site VALORY",
+          replyto: form.email,
           nome: form.name,
           email: form.email,
           mensagem: form.msg || "(sem mensagem)",
