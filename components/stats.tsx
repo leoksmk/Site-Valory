@@ -5,7 +5,7 @@ import CountUp from "./count-up";
 import { Reveal } from "./reveal";
 import type { TKey } from "@/lib/i18n";
 
-// Números reais do projeto (deck RAC): 3 contagens, tolerância zero, 8 nichos N1–N8, NR-12.
+// Números reais do projeto (deck VALORY): 3 contagens, tolerância zero, 8 nichos N1–N8, NR-12.
 const ITEMS: Array<{ n?: number; suf?: string; text?: string; key: TKey }> = [
   { n: 3, suf: "×", key: "stat_1" },
   { n: 0, suf: "%", key: "stat_2" },

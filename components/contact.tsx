@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useLang } from "./lang-context";
 import { Reveal } from "./reveal";
-import { SITE } from "@/lib/site-data";
 
 type Status = "idle" | "sending" | "ok" | "error";
 
@@ -36,17 +35,6 @@ export default function Contact() {
           <span className="eyebrow">{t("ct_eyebrow")}</span>
           <h2>{t("ct_title")}</h2>
           <p>{t("ct_lead")}</p>
-          <ul className="contact__info">
-            {/* TROCAR: e-mail e telefone reais */}
-            <li>
-              <span>{t("ct_email_l")}</span>
-              <a href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a>
-            </li>
-            <li>
-              <span>{t("ct_phone_l")}</span>
-              <a href={`tel:${SITE.contact.phoneHref}`}>{SITE.contact.phoneLabel}</a>
-            </li>
-          </ul>
         </div>
 
         <form className="contact__form spot" onSubmit={onSubmit}>
@@ -79,7 +67,8 @@ export default function Contact() {
           <button className="btn btn--gold" type="submit" disabled={status === "sending"}>
             {status === "sending" ? "…" : t("ct_f_btn")}
           </button>
-          {status === "ok" && <small className="contact__ok">✓ OK</small>}
+          {status === "ok" && <small className="contact__ok">✓ {t("ct_ok")}</small>}
+          {status === "error" && <small className="contact__err">{t("ct_err")}</small>}
           <small className="contact__note">{t("ct_note")}</small>
         </form>
       </Reveal>

@@ -1,6 +1,6 @@
-# Valory — Landing Page (RAC)
+# VALORY · Landing Page
 
-Landing page da **Valory**, apresentando o **RAC** — célula automatizada de cartonização inteligente para alocação de medicamentos em embalagens (Triple Check, visão computacional, zero divergência, NR-12).
+Landing page da **Valory**, apresentando a **VALORY**: célula automatizada de cartonização inteligente para alocação de medicamentos em embalagens (Triple Check, visão computacional, zero divergência, NR-12).
 
 **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS. **Bilíngue PT/EN.** Pronta para deploy na Vercel.
 
@@ -33,7 +33,7 @@ npm start       # sobe o build
 ## Deploy na Vercel
 
 1. [vercel.com](https://vercel.com) → **Add New… → Project** → importe `leoksmk/Site-Valory`.
-2. A Vercel detecta **Next.js** sozinha — não precisa configurar nada. Clique em **Deploy**.
+2. A Vercel detecta **Next.js** sozinha, não precisa configurar nada. Clique em **Deploy**.
 3. A branch de **produção** (padrão: `main`) vira a URL principal; **cada outra branch/PR ganha um Preview URL automático**.
 
 > Se o deploy "não muda", é porque as alterações estão numa branch diferente da de produção.
@@ -41,9 +41,9 @@ npm start       # sobe o build
 
 ## Formulário de contato
 
-`app/api/contact/route.ts` valida e recebe o POST, mas **ainda não envia e-mail** — só registra no log.
-Para enviar de verdade, plugue um provedor (Resend/SendGrid/SMTP) usando uma variável de ambiente na
-Vercel (Settings → Environment Variables). O ponto de integração está comentado no arquivo.
+`app/api/contact/route.ts` valida o POST e encaminha a mensagem por e-mail (só no servidor).
+Padrão: FormSubmit, sem chave. No primeiro envio chega um e-mail de ativação no destinatário; clique em "Activate".
+Opcional na Vercel (Settings → Environment Variables): `CONTACT_TO` troca o destinatário; `RESEND_API_KEY` passa a usar a Resend.
 
 ## O que ainda falta trocar (placeholders)
 
@@ -52,7 +52,7 @@ Marcados no código com `TROCAR`:
 - **`public/render-placeholder.png`** → render 3D final (hero).
 - **`components/demo.tsx`** → vídeo/GIF da IHM (`.demo__ph`) e as 3 screenshots (`.shot__ph`).
 - **`components/contact.tsx`** → e-mail e telefone reais.
-- **Logo:** `public/logo.webp` ainda tem fundo branco — substituir por PNG transparente.
+- **Logo:** `public/logo.webp` ainda tem fundo branco; substituir por PNG transparente.
 
 ## Textos (PT/EN)
 

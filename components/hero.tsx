@@ -24,7 +24,7 @@ export default function Hero() {
   const [pesoV, setPesoV] = useState(peso.base + peso.var * 0.4);
   const [corrV, setCorrV] = useState(corrente.base + corrente.var * 0.4);
 
-  // telemetria simulada — pequenas flutuações (valores ilustrativos)
+  // telemetria simulada: pequenas flutuações (valores ilustrativos)
   useEffect(() => {
     const id = setInterval(() => {
       setPesoV(peso.base + Math.random() * peso.var);
@@ -66,7 +66,7 @@ export default function Hero() {
         >
           <div className="stage" id="stage">
             <div className="stage__top">
-              <span className="t">RAC · TELEMETRIA</span>
+              <span className="t">VALORY · TELEMETRIA</span>
               <span className="stage__live">
                 <b />
                 {t("hero_demo_tag")}
@@ -74,7 +74,7 @@ export default function Hero() {
             </div>
             {/* TROCAR: /render-placeholder.png pelo render 3D final (ou modelo STL 3D) */}
             <div className="stage__screen">
-              <Image src="/render-placeholder.png" alt="Valory RAC" width={660} height={517} priority />
+              <Image src="/render-placeholder.png" alt="Célula VALORY" width={660} height={517} priority />
             </div>
             <div className="stage__chips">
               <div className="chip">

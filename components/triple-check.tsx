@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLang } from "./lang-context";
 import { Reveal } from "./reveal";
 import { SITE } from "@/lib/site-data";
@@ -27,6 +27,11 @@ export default function TripleCheck() {
   const [force, setForce] = useState(false);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const raf = useRef<number[]>([]);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const visible = useRef(false);
+  const looping = useRef(false);
+  const cycle = useRef(0);
+  const forceRef = useRef(false);
 
   const missedIndex = force ? total - 1 : -1;
   const c1 = placed;
@@ -43,18 +48,14 @@ export default function TripleCheck() {
     raf.current = [];
   }
 
-  function reset() {
-    clearAll();
-    setPhase("idle");
-    setTotal(0);
-    setPlaced(0);
-    setWeight(0);
-    setScanIndex(0);
-  }
-
+  // Ciclo automático: roda em loop enquanto a seção está visível.
+  // A cada 4 ciclos um sai com divergência, para mostrar o bloqueio.
   function run() {
-    if (phase !== "idle" && phase !== "ok" && phase !== "bad") return;
     clearAll();
+    looping.current = true;
+    cycle.current++;
+    forceRef.current = cycle.current % 4 === 0;
+    setForce(forceRef.current);
     const { minItems, maxItems } = SITE.tripleCheck;
     const tot = minItems + Math.floor(Math.random() * (maxItems - minItems + 1));
     setTotal(tot);
@@ -63,7 +64,7 @@ export default function TripleCheck() {
     setScanIndex(0);
     setPhase("cnc");
 
-    // ETAPA 1 — CNC: coleta e posiciona cada caixa
+    // ETAPA 1 · CNC: coleta e posiciona cada caixa
     let n = 0;
     const iv = setInterval(() => {
       n++;
@@ -100,12 +101,41 @@ export default function TripleCheck() {
       if (i >= tot) {
         clearInterval(iv);
         timers.current.push(
-          setTimeout(() => setPhase(force ? "bad" : "ok"), 800)
+          setTimeout(() => {
+            setPhase(forceRef.current ? "bad" : "ok");
+            timers.current.push(setTimeout(next, 2600));
+          }, 800)
         );
       }
     }, 230);
     timers.current.push(iv);
   }
+
+  function next() {
+    if (visible.current) run();
+    else looping.current = false;
+  }
+
+  const runRef = useRef(run);
+  runRef.current = run;
+
+  useEffect(() => {
+    const el = sceneRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible.current = entry.isIntersecting;
+        if (entry.isIntersecting && !looping.current) runRef.current();
+      },
+      { threshold: 0.35 }
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      timers.current.forEach((x) => clearTimeout(x));
+      raf.current.forEach((id) => cancelAnimationFrame(id));
+    };
+  }, []);
 
   const running = phase === "cnc" || phase === "peso" || phase === "visao";
   const statusKey =
@@ -131,7 +161,7 @@ export default function TripleCheck() {
     const row = Math.floor(i / COLS);
     const col = i % COLS;
     const restX = PADX + col * (IW + GAPX);
-    const restY = BOX_H - 20 - row * (IH + GAPY);
+    const restY = BOX_H - IH - 14 - row * (IH + GAPY);
     const isPlaced = i < placed;
     const seen = (phase === "visao" || phase === "ok" || phase === "bad") && i < scanIndex && i !== missedIndex;
     const missed = (phase === "visao" || phase === "bad") && i === missedIndex && scanIndex > i;
@@ -147,7 +177,7 @@ export default function TripleCheck() {
       </Reveal>
 
       <Reveal className="tcx">
-        {/* STEPPER — 3 etapas */}
+        {/* STEPPER · 3 etapas */}
         <div className="tcx__steps">
           {steps.map((s, i) => (
             <div
@@ -169,7 +199,7 @@ export default function TripleCheck() {
         </div>
 
         {/* CENA */}
-        <div className={`tcx__scene phase-${phase}`}>
+        <div ref={sceneRef} className={`tcx__scene phase-${phase}`}>
           <div className="tcx__stagelbl">{t(statusKey)}</div>
 
           <div className={`tcx__box${boxState}`}>
@@ -193,7 +223,7 @@ export default function TripleCheck() {
             </div>
             {(phase === "visao") && <span className="tcx__scan" />}
             <span className="tcx__box-tag">
-              <b>{Math.max(placed, 0)}</b>/{total || "—"}
+              <b>{Math.max(placed, 0)}</b>/{total}
             </span>
           </div>
 
@@ -206,7 +236,7 @@ export default function TripleCheck() {
             </div>
           </div>
 
-          <span className="tcx__scene-cap">CAIXA · RAC</span>
+          <span className="tcx__scene-cap">CAIXA · VALORY</span>
         </div>
 
         {/* PAINEL */}
@@ -214,26 +244,6 @@ export default function TripleCheck() {
           <div className="tcx__status" data-state={statusState}>
             <i className="tcx__led" />
             <span>{t(statusKey)}</span>
-          </div>
-          <div className="tcx__controls">
-            <button className="btn btn--gold" onClick={run} disabled={running}>
-              {t("tc_sim_btn")}
-            </button>
-            <button className="btn btn--ghost" onClick={reset}>
-              {t("tc_sim_reset")}
-            </button>
-            <label className="tcx__toggle">
-              <input
-                type="checkbox"
-                checked={force}
-                onChange={(e) => {
-                  setForce(e.target.checked);
-                  if (!running) reset();
-                }}
-              />
-              <span className="tcx__switch" />
-              <span>{t("tc_toggle")}</span>
-            </label>
           </div>
         </div>
       </Reveal>
