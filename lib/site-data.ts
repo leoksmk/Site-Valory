@@ -8,6 +8,13 @@
 
 export const SITE = {
   /**
+   * Destino do formulário de contato (FormSubmit, envio feito pelo navegador).
+   * Depois de ativar, o FormSubmit manda um código aleatório: troque o e-mail
+   * por ele aqui para o endereço não aparecer no código do site.
+   */
+  contactInbox: "leonardokenmiwa@gmail.com",
+
+  /**
    * Painel de telemetria do hero: SIMULAÇÃO no front-end (valores ilustrativos).
    * Os valores flutuam entre base e base+var para dar sensação de "ao vivo".
    */

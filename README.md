@@ -11,7 +11,6 @@ app/
   layout.tsx          → metadata + fontes (next/font) + provider de idioma
   page.tsx            → monta as seções
   globals.css         → design system (tema dourado/escuro) + responsivo
-  api/contact/route.ts→ endpoint do formulário de contato
 components/
   nav, hero, marquee, stats, solution, levels, triple-check,
   tech, demo, contact, footer, background, interactions, count-up
@@ -41,9 +40,9 @@ npm start       # sobe o build
 
 ## Formulário de contato
 
-`app/api/contact/route.ts` valida o POST e encaminha a mensagem por e-mail (só no servidor).
-Padrão: FormSubmit, sem chave. No primeiro envio chega um e-mail de ativação no destinatário; clique em "Activate".
-Opcional na Vercel (Settings → Environment Variables): `CONTACT_TO` troca o destinatário; `RESEND_API_KEY` passa a usar a Resend.
+O formulário (`components/contact.tsx`) envia direto do navegador para o FormSubmit (grátis, sem chave),
+destino em `SITE.contactInbox` (`lib/site-data.ts`). No primeiro envio chega um e-mail de ativação; clique em "Activate".
+Depois troque o e-mail em `contactInbox` pelo código aleatório que o FormSubmit fornece.
 
 ## O que ainda falta trocar (placeholders)
 
