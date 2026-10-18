@@ -56,20 +56,6 @@ export default function Hero() {
               {t("hero_cta2")}
             </a>
           </motion.div>
-          <motion.div className="hero__metrics" variants={item}>
-            <div className="metric">
-              <div className="n">3<span className="u">×</span></div>
-              <div className="l">{t("stat_1")}</div>
-            </div>
-            <div className="metric">
-              <div className="n">0<span className="u">%</span></div>
-              <div className="l">{t("stat_2")}</div>
-            </div>
-            <div className="metric">
-              <div className="n">24/7</div>
-              <div className="l">{t("stat_4")}</div>
-            </div>
-          </motion.div>
         </motion.div>
 
         <motion.div

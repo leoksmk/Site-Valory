@@ -18,7 +18,7 @@ export const DICT = {
     stat_1: "Contagens independentes (Triple Check)",
     stat_2: "Divergência tolerada na validação",
     stat_3: "Arquitetura de segurança industrial",
-    stat_4: "Operação contínua e rastreável",
+    stat_4: "Nichos de coleta por bancada",
 
     sol_eyebrow: "A Solução", sol_title: "O que é o RAC",
     sol_lead: "Uma célula automatizada de cartonização inteligente: ela recebe a ordem de separação, coleta cada medicamento no nicho certo, deposita na embalagem e valida a contagem antes de liberar. Menos erro humano, mais rastreabilidade, throughput previsível.",
@@ -85,7 +85,7 @@ export const DICT = {
     stat_1: "Independent counts (Triple Check)",
     stat_2: "Divergence tolerated at validation",
     stat_3: "Industrial safety architecture",
-    stat_4: "Continuous, traceable operation",
+    stat_4: "Pick niches per workbench",
 
     sol_eyebrow: "The Solution", sol_title: "What RAC is",
     sol_lead: "A smart automated cartonization cell: it receives the picking order, collects each item from the right niche, drops it into the box and validates the count before release. Less human error, more traceability, predictable throughput.",
