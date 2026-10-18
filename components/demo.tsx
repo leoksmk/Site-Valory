@@ -8,9 +8,7 @@ import type { TKey } from "@/lib/i18n";
 
 type Clip = { id: string; key: TKey; src: string | null; rate?: number };
 
-// A bancada/estrutura vem primeiro (padrão). src null = placeholder até o vídeo chegar.
 const CLIPS: Clip[] = [
-  { id: "estrutura", key: "demo_estrutura", src: null }, // TROCAR: /demo-estrutura.webm
   { id: "ihm", key: "demo_ihm", src: "/ihm-demo.mp4", rate: 1.5 },
   { id: "dashboard", key: "demo_s1", src: "/demo-dashboard.webm" },
   { id: "ordens", key: "demo_s3", src: "/demo-ordens.webm" },
