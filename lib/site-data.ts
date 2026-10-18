@@ -8,11 +8,11 @@
 
 export const SITE = {
   /**
-   * Destino do formulário de contato (FormSubmit, envio feito pelo navegador).
-   * Depois de ativar, o FormSubmit manda um código aleatório: troque o e-mail
-   * por ele aqui para o endereço não aparecer no código do site.
+   * Formulário de contato (Web3Forms, envio pelo navegador).
+   * Chave pública gerada em https://web3forms.com para o e-mail da equipe;
+   * as mensagens chegam nesse e-mail. A chave pode ficar no código (é pública).
    */
-  contactInbox: "leonardokenmiwa@gmail.com",
+  web3formsKey: "COLE_A_CHAVE_AQUI",
 
   /**
    * Painel de telemetria do hero: SIMULAÇÃO no front-end (valores ilustrativos).
