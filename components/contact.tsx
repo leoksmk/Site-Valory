@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLang } from "./lang-context";
 import { Reveal } from "./reveal";
+import { SITE } from "@/lib/site-data";
 
 type Status = "idle" | "sending" | "ok" | "error";
 
@@ -15,12 +16,21 @@ export default function Contact() {
     e.preventDefault();
     setStatus("sending");
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(`https://formsubmit.co/ajax/${SITE.contactInbox}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          _subject: `Contato pelo site VALORY · ${form.name}`,
+          _template: "table",
+          _captcha: "false",
+          _replyto: form.email,
+          nome: form.name,
+          email: form.email,
+          mensagem: form.msg || "(sem mensagem)",
+        }),
       });
-      if (!res.ok) throw new Error("bad response");
+      const data = await res.json().catch(() => null);
+      if (!res.ok || String(data?.success) !== "true") throw new Error(data?.message || "send failed");
       setStatus("ok");
       setForm({ name: "", email: "", msg: "" });
     } catch {
