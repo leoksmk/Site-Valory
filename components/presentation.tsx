@@ -18,7 +18,7 @@ export default function Presentation() {
         <div className="pres__frame">
           <iframe
             src={SITE.presentation.embedUrl}
-            title="Valory RAC — Apresentação"
+            title="VALORY · Apresentação"
             allowFullScreen
             loading="lazy"
             frameBorder={0}

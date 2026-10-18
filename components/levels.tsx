@@ -20,7 +20,7 @@ export default function Levels() {
           <h2>{t("how_title")}</h2>
           <p className="section__lead">{t("how_lead")}</p>
           <div className="levels__figure">
-            <Image src="/render-placeholder.png" alt="Estrutura do RAC em 3 níveis" width={660} height={517} />
+            <Image src="/render-placeholder.png" alt="Estrutura da VALORY em 3 níveis" width={660} height={517} />
           </div>
         </Reveal>
 

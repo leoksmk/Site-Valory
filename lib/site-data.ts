@@ -1,5 +1,5 @@
 /**
- * DADOS DO SITE — fonte única e editável.
+ * DADOS DO SITE: fonte única e editável.
  *
  * Os valores abaixo marcados como "ILUSTRATIVO" são de DEMONSTRAÇÃO.
  * Troque pelos números reais do projeto quando forem definidos.
@@ -7,15 +7,8 @@
  */
 
 export const SITE = {
-  /** Contato exibido na seção "Contato" e no rodapé. */
-  contact: {
-    email: "contato@valory.com", // TROCAR pelo e-mail real
-    phoneLabel: "+55 (00) 0000-0000", // TROCAR pelo telefone real (exibição)
-    phoneHref: "+550000000000", // TROCAR pelo telefone real (link tel:)
-  },
-
   /**
-   * Painel de telemetria do hero — SIMULAÇÃO no front-end (valores ilustrativos).
+   * Painel de telemetria do hero: SIMULAÇÃO no front-end (valores ilustrativos).
    * Os valores flutuam entre base e base+var para dar sensação de "ao vivo".
    */
   telemetry: {

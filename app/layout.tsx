@@ -25,12 +25,12 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Valory — Célula Automatizada de Cartonização Inteligente",
+  title: "Valory · Célula Automatizada de Cartonização Inteligente",
   description:
-    "Valory RAC — célula automatizada para alocação de medicamentos em embalagens com Triple Check, visão computacional e zero divergência.",
+    "VALORY: célula automatizada para alocação de medicamentos em embalagens com Triple Check, visão computacional e zero divergência.",
   icons: { icon: "/logo.webp" },
   openGraph: {
-    title: "Valory — Cartonização Inteligente",
+    title: "Valory · Cartonização Inteligente",
     description:
       "Célula robótica que separa, conta e embala medicamentos com Triple Check e zero divergência.",
     type: "website",
