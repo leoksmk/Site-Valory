@@ -35,9 +35,9 @@ export const SITE = {
   presentation: {
     // URL de EMBED (troque /pub por /embed). Para atualizar, publique de novo o slide.
     embedUrl:
-      "https://docs.google.com/presentation/d/1bm1OaYtGqh8J2t4KdJdqMiBPKRbhfaszUfmiO1heXik/edit?usp=sharing/embed?start=true&loop=true&delayms=3000",
+      "https://docs.google.com/presentation/d/e/2PACX-1vQ3cz3cnaj9uqXICVv6ombTSNDixmBCYZefDJbgKY0II6ERSBu5CvbAGQBMvn1kpr2ANlOr64HIcfmq/pub?start=false&loop=false&delayms=3000",
     // https://docs.google.com/presentation/d/1bm1OaYtGqh8J2t4KdJdqMiBPKRbhfaszUfmiO1heXik/edit?usp=sharing
     pubUrl:
-      "https://docs.google.com/presentation/d/1bm1OaYtGqh8J2t4KdJdqMiBPKRbhfaszUfmiO1heXik/edit?usp=sharing/pub?start=true&loop=true&delayms=3000&slide=id.p",
+      "https://docs.google.com/presentation/d/e/2PACX-1vQ3cz3cnaj9uqXICVv6ombTSNDixmBCYZefDJbgKY0II6ERSBu5CvbAGQBMvn1kpr2ANlOr64HIcfmq/pub?start=false&loop=false&delayms=3000&slide=id.p",
   },
 } as const;
